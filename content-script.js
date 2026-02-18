@@ -45,6 +45,20 @@
       });
   }
 
+  /**
+   * Load a .d.ts file and send its content to the page context
+   * via a CustomEvent. typedefs-injector.js listens for these.
+   */
+  function injectTypeDef(file, fileName) {
+    return fetch(chrome.runtime.getURL(file))
+      .then(function (r) { return r.text(); })
+      .then(function (content) {
+        document.dispatchEvent(new CustomEvent('__apexTypeDef', {
+          detail: JSON.stringify({ fileName: fileName, content: content })
+        }));
+      });
+  }
+
   // ── injection sequence ───────────────────────
 
   async function injectAll() {
@@ -67,7 +81,14 @@
       // Step 4: Inject language switcher (for popup communication)
       await injectScript('language-switcher.js');
 
-      console.log('[APEX Autocomplete] All scripts injected');
+      // Step 5: Inject typedefs injector, then send .d.ts content
+      await injectScript('typedefs-injector.js');
+      await Promise.all([
+        injectTypeDef('typedefs/jquery.d.ts', 'jquery.d.ts'),
+        injectTypeDef('typedefs/apex-js.d.ts', 'apex-js.d.ts'),
+      ]);
+
+      console.log('[APEX Autocomplete] All scripts and typedefs injected');
     } catch (err) {
       console.error('[APEX Autocomplete] Injection failed:', err);
     }
