@@ -1,0 +1,300 @@
+{
+  "keywords": [
+    { "label": "DECLARE", "category": "block", "detail": "Declare section" },
+    { "label": "BEGIN", "category": "block", "detail": "Begin executable section" },
+    { "label": "END", "category": "block", "detail": "End block" },
+    { "label": "EXCEPTION", "category": "block", "detail": "Exception handling section" },
+    { "label": "CREATE OR REPLACE PROCEDURE", "category": "block", "detail": "Create a stored procedure" },
+    { "label": "CREATE OR REPLACE FUNCTION", "category": "block", "detail": "Create a stored function" },
+    { "label": "CREATE OR REPLACE PACKAGE", "category": "block", "detail": "Create a package spec" },
+    { "label": "CREATE OR REPLACE PACKAGE BODY", "category": "block", "detail": "Create a package body" },
+
+    { "label": "IF", "category": "control", "detail": "Conditional" },
+    { "label": "THEN", "category": "control", "detail": "Then clause" },
+    { "label": "ELSIF", "category": "control", "detail": "Else if" },
+    { "label": "ELSE", "category": "control", "detail": "Else clause" },
+    { "label": "END IF", "category": "control", "detail": "End IF block" },
+
+    { "label": "LOOP", "category": "loop", "detail": "Basic loop" },
+    { "label": "END LOOP", "category": "loop", "detail": "End loop" },
+    { "label": "WHILE", "category": "loop", "detail": "While loop" },
+    { "label": "FOR", "category": "loop", "detail": "For loop" },
+    { "label": "EXIT", "category": "loop", "detail": "Exit loop" },
+    { "label": "EXIT WHEN", "category": "loop", "detail": "Exit loop when condition" },
+    { "label": "CONTINUE", "category": "loop", "detail": "Continue loop" },
+    { "label": "CONTINUE WHEN", "category": "loop", "detail": "Continue when condition" },
+
+    { "label": "CURSOR", "category": "cursor", "detail": "Declare cursor" },
+    { "label": "OPEN", "category": "cursor", "detail": "Open cursor" },
+    { "label": "FETCH", "category": "cursor", "detail": "Fetch from cursor" },
+    { "label": "CLOSE", "category": "cursor", "detail": "Close cursor" },
+    { "label": "%FOUND", "category": "cursor_attr", "detail": "Cursor found attribute" },
+    { "label": "%NOTFOUND", "category": "cursor_attr", "detail": "Cursor not found attribute" },
+    { "label": "%ROWCOUNT", "category": "cursor_attr", "detail": "Cursor row count" },
+    { "label": "%ISOPEN", "category": "cursor_attr", "detail": "Cursor is open" },
+    { "label": "%TYPE", "category": "type_attr", "detail": "Column type attribute" },
+    { "label": "%ROWTYPE", "category": "type_attr", "detail": "Row type attribute" },
+    { "label": "BULK COLLECT", "category": "bulk", "detail": "Bulk collect into collection" },
+    { "label": "FORALL", "category": "bulk", "detail": "Bulk DML operation" },
+
+    { "label": "VARCHAR2", "category": "type", "detail": "Variable-length string" },
+    { "label": "NUMBER", "category": "type", "detail": "Numeric type" },
+    { "label": "INTEGER", "category": "type", "detail": "Integer type" },
+    { "label": "PLS_INTEGER", "category": "type", "detail": "PL/SQL integer (fast)" },
+    { "label": "BINARY_INTEGER", "category": "type", "detail": "Binary integer" },
+    { "label": "DATE", "category": "type", "detail": "Date type" },
+    { "label": "TIMESTAMP", "category": "type", "detail": "Timestamp type" },
+    { "label": "BOOLEAN", "category": "type", "detail": "Boolean type" },
+    { "label": "CLOB", "category": "type", "detail": "Character large object" },
+    { "label": "BLOB", "category": "type", "detail": "Binary large object" },
+    { "label": "RAW", "category": "type", "detail": "Raw binary data" },
+    { "label": "XMLTYPE", "category": "type", "detail": "XML type" },
+    { "label": "JSON", "category": "type", "detail": "JSON type" },
+    { "label": "SYS_REFCURSOR", "category": "type", "detail": "Reference cursor" },
+    { "label": "LONG", "category": "type", "detail": "Long string (legacy)" },
+    { "label": "CHAR", "category": "type", "detail": "Fixed-length string" },
+    { "label": "NVARCHAR2", "category": "type", "detail": "National variable-length string" },
+    { "label": "BINARY_FLOAT", "category": "type", "detail": "32-bit floating point" },
+    { "label": "BINARY_DOUBLE", "category": "type", "detail": "64-bit floating point" },
+    { "label": "SIMPLE_INTEGER", "category": "type", "detail": "NOT NULL PLS_INTEGER" },
+
+    { "label": "RECORD", "category": "composite_type", "detail": "Record type" },
+    { "label": "TABLE OF", "category": "composite_type", "detail": "Associative array/nested table" },
+    { "label": "VARRAY", "category": "composite_type", "detail": "Variable-size array" },
+    { "label": "TYPE", "category": "composite_type", "detail": "Type declaration" },
+    { "label": "SUBTYPE", "category": "composite_type", "detail": "Subtype declaration" },
+
+    { "label": "RAISE", "category": "exception", "detail": "Raise exception" },
+    { "label": "RAISE_APPLICATION_ERROR", "category": "exception", "detail": "Raise custom error" },
+    { "label": "WHEN OTHERS THEN", "category": "exception", "detail": "Catch-all exception handler" },
+    { "label": "NO_DATA_FOUND", "category": "exception", "detail": "No rows returned" },
+    { "label": "TOO_MANY_ROWS", "category": "exception", "detail": "Multiple rows returned" },
+    { "label": "DUP_VAL_ON_INDEX", "category": "exception", "detail": "Duplicate value on unique index" },
+    { "label": "ZERO_DIVIDE", "category": "exception", "detail": "Division by zero" },
+    { "label": "INVALID_NUMBER", "category": "exception", "detail": "Invalid number conversion" },
+    { "label": "VALUE_ERROR", "category": "exception", "detail": "Value conversion error" },
+    { "label": "INVALID_CURSOR", "category": "exception", "detail": "Invalid cursor operation" },
+    { "label": "CURSOR_ALREADY_OPEN", "category": "exception", "detail": "Cursor already open" },
+    { "label": "LOGIN_DENIED", "category": "exception", "detail": "Login denied" },
+    { "label": "PROGRAM_ERROR", "category": "exception", "detail": "Internal PL/SQL error" },
+    { "label": "STORAGE_ERROR", "category": "exception", "detail": "Out of memory" },
+    { "label": "TIMEOUT_ON_RESOURCE", "category": "exception", "detail": "Timeout waiting for resource" },
+    { "label": "PRAGMA EXCEPTION_INIT", "category": "exception", "detail": "Associate exception with error code" },
+    { "label": "SQLCODE", "category": "exception", "detail": "Current error code" },
+    { "label": "SQLERRM", "category": "exception", "detail": "Current error message" },
+
+    { "label": "PROCEDURE", "category": "program_unit", "detail": "Procedure declaration" },
+    { "label": "FUNCTION", "category": "program_unit", "detail": "Function declaration" },
+    { "label": "RETURN", "category": "program_unit", "detail": "Return value/exit" },
+    { "label": "IN", "category": "parameter", "detail": "Input parameter" },
+    { "label": "OUT", "category": "parameter", "detail": "Output parameter" },
+    { "label": "IN OUT", "category": "parameter", "detail": "Input/output parameter" },
+    { "label": "DEFAULT", "category": "parameter", "detail": "Default parameter value" },
+    { "label": "NOCOPY", "category": "parameter", "detail": "Pass by reference hint" },
+    { "label": "DETERMINISTIC", "category": "parameter", "detail": "Function returns same result for same args" },
+    { "label": "PIPELINED", "category": "parameter", "detail": "Pipelined table function" },
+    { "label": "PIPE ROW", "category": "parameter", "detail": "Return row from pipelined function" },
+    { "label": "AUTHID CURRENT_USER", "category": "parameter", "detail": "Invoker's rights" },
+    { "label": "AUTHID DEFINER", "category": "parameter", "detail": "Definer's rights" },
+    { "label": "RESULT_CACHE", "category": "parameter", "detail": "Cache function results" },
+
+    { "label": "DBMS_OUTPUT.PUT_LINE", "category": "builtin_pkg", "detail": "Print to output buffer" },
+    { "label": "DBMS_OUTPUT.ENABLE", "category": "builtin_pkg", "detail": "Enable output buffer" },
+    { "label": "DBMS_LOB.GETLENGTH", "category": "builtin_pkg", "detail": "Get LOB length" },
+    { "label": "DBMS_LOB.SUBSTR", "category": "builtin_pkg", "detail": "Extract LOB substring" },
+    { "label": "DBMS_LOB.APPEND", "category": "builtin_pkg", "detail": "Append to LOB" },
+    { "label": "DBMS_LOB.WRITEAPPEND", "category": "builtin_pkg", "detail": "Write and append to LOB" },
+    { "label": "DBMS_SQL.EXECUTE", "category": "builtin_pkg", "detail": "Execute dynamic SQL" },
+    { "label": "DBMS_SCHEDULER.CREATE_JOB", "category": "builtin_pkg", "detail": "Create scheduler job" },
+    { "label": "UTL_FILE.FOPEN", "category": "builtin_pkg", "detail": "Open file" },
+    { "label": "UTL_FILE.PUT_LINE", "category": "builtin_pkg", "detail": "Write line to file" },
+    { "label": "UTL_FILE.FCLOSE", "category": "builtin_pkg", "detail": "Close file" },
+
+    { "label": "NVL", "category": "function", "detail": "Replace NULL with value" },
+    { "label": "NVL2", "category": "function", "detail": "If not null/null returns" },
+    { "label": "COALESCE", "category": "function", "detail": "First non-null value" },
+    { "label": "DECODE", "category": "function", "detail": "If/then/else in SQL" },
+    { "label": "GREATEST", "category": "function", "detail": "Greatest value" },
+    { "label": "LEAST", "category": "function", "detail": "Least value" },
+    { "label": "NULLIF", "category": "function", "detail": "Return NULL if equal" },
+    { "label": "TO_CHAR", "category": "function", "detail": "Convert to string" },
+    { "label": "TO_DATE", "category": "function", "detail": "Convert to date" },
+    { "label": "TO_NUMBER", "category": "function", "detail": "Convert to number" },
+    { "label": "TO_TIMESTAMP", "category": "function", "detail": "Convert to timestamp" },
+    { "label": "TO_CLOB", "category": "function", "detail": "Convert to CLOB" },
+    { "label": "CAST", "category": "function", "detail": "Convert data type" },
+    { "label": "TRUNC", "category": "function", "detail": "Truncate number/date" },
+    { "label": "ROUND", "category": "function", "detail": "Round number/date" },
+    { "label": "CEIL", "category": "function", "detail": "Ceiling (round up)" },
+    { "label": "FLOOR", "category": "function", "detail": "Floor (round down)" },
+    { "label": "ABS", "category": "function", "detail": "Absolute value" },
+    { "label": "MOD", "category": "function", "detail": "Modulo" },
+    { "label": "POWER", "category": "function", "detail": "Power" },
+    { "label": "SQRT", "category": "function", "detail": "Square root" },
+    { "label": "SIGN", "category": "function", "detail": "Sign of number" },
+    { "label": "SUBSTR", "category": "function", "detail": "Substring" },
+    { "label": "INSTR", "category": "function", "detail": "Find substring position" },
+    { "label": "LENGTH", "category": "function", "detail": "String length" },
+    { "label": "REPLACE", "category": "function", "detail": "Replace substring" },
+    { "label": "TRANSLATE", "category": "function", "detail": "Translate characters" },
+    { "label": "TRIM", "category": "function", "detail": "Trim whitespace" },
+    { "label": "LTRIM", "category": "function", "detail": "Left trim" },
+    { "label": "RTRIM", "category": "function", "detail": "Right trim" },
+    { "label": "UPPER", "category": "function", "detail": "Uppercase" },
+    { "label": "LOWER", "category": "function", "detail": "Lowercase" },
+    { "label": "INITCAP", "category": "function", "detail": "Initial capitals" },
+    { "label": "LPAD", "category": "function", "detail": "Left pad string" },
+    { "label": "RPAD", "category": "function", "detail": "Right pad string" },
+    { "label": "CONCAT", "category": "function", "detail": "Concatenate strings" },
+    { "label": "CHR", "category": "function", "detail": "Character from ASCII code" },
+    { "label": "ASCII", "category": "function", "detail": "ASCII code from character" },
+    { "label": "REGEXP_LIKE", "category": "function", "detail": "Regex match" },
+    { "label": "REGEXP_REPLACE", "category": "function", "detail": "Regex replace" },
+    { "label": "REGEXP_SUBSTR", "category": "function", "detail": "Regex substring" },
+    { "label": "REGEXP_INSTR", "category": "function", "detail": "Regex position" },
+    { "label": "REGEXP_COUNT", "category": "function", "detail": "Regex match count" },
+    { "label": "SYSDATE", "category": "function", "detail": "Current date" },
+    { "label": "SYSTIMESTAMP", "category": "function", "detail": "Current timestamp" },
+    { "label": "CURRENT_DATE", "category": "function", "detail": "Session current date" },
+    { "label": "CURRENT_TIMESTAMP", "category": "function", "detail": "Session current timestamp" },
+    { "label": "ADD_MONTHS", "category": "function", "detail": "Add months to date" },
+    { "label": "MONTHS_BETWEEN", "category": "function", "detail": "Months between dates" },
+    { "label": "LAST_DAY", "category": "function", "detail": "Last day of month" },
+    { "label": "NEXT_DAY", "category": "function", "detail": "Next weekday after date" },
+    { "label": "EXTRACT", "category": "function", "detail": "Extract date component" },
+    { "label": "NUMTODSINTERVAL", "category": "function", "detail": "Number to day-second interval" },
+    { "label": "NUMTOYMINTERVAL", "category": "function", "detail": "Number to year-month interval" },
+    { "label": "LISTAGG", "category": "function", "detail": "Aggregate strings" },
+    { "label": "XMLAGG", "category": "function", "detail": "Aggregate XML" },
+    { "label": "JSON_OBJECT", "category": "function", "detail": "Create JSON object" },
+    { "label": "JSON_ARRAY", "category": "function", "detail": "Create JSON array" },
+    { "label": "JSON_VALUE", "category": "function", "detail": "Extract scalar from JSON" },
+    { "label": "JSON_QUERY", "category": "function", "detail": "Extract JSON fragment" },
+    { "label": "JSON_TABLE", "category": "function", "detail": "Query JSON as relational" },
+    { "label": "ROW_NUMBER", "category": "analytic", "detail": "Sequential row number" },
+    { "label": "RANK", "category": "analytic", "detail": "Rank with gaps" },
+    { "label": "DENSE_RANK", "category": "analytic", "detail": "Rank without gaps" },
+    { "label": "NTILE", "category": "analytic", "detail": "Distribute rows into buckets" },
+    { "label": "LAG", "category": "analytic", "detail": "Previous row value" },
+    { "label": "LEAD", "category": "analytic", "detail": "Next row value" },
+    { "label": "FIRST_VALUE", "category": "analytic", "detail": "First value in window" },
+    { "label": "LAST_VALUE", "category": "analytic", "detail": "Last value in window" },
+    { "label": "OVER", "category": "analytic", "detail": "Analytic function window" },
+    { "label": "PARTITION BY", "category": "analytic", "detail": "Partition analytic window" },
+    { "label": "ROWS BETWEEN", "category": "analytic", "detail": "Window frame" },
+    { "label": "UNBOUNDED PRECEDING", "category": "analytic", "detail": "Window start" },
+    { "label": "CURRENT ROW", "category": "analytic", "detail": "Current row in window" },
+    { "label": "UNBOUNDED FOLLOWING", "category": "analytic", "detail": "Window end" },
+
+    { "label": "EXECUTE IMMEDIATE", "category": "dynamic", "detail": "Execute dynamic SQL" },
+    { "label": "USING", "category": "dynamic", "detail": "Bind variables for dynamic SQL" }
+  ],
+
+  "snippets": [
+    {
+      "label": "FOR..LOOP (cursor)",
+      "insertText": "FOR rec IN (SELECT ${1:columns} FROM ${2:table}) LOOP\n  ${3:-- process}\nEND LOOP;",
+      "detail": "Cursor FOR loop"
+    },
+    {
+      "label": "FOR..LOOP (numeric)",
+      "insertText": "FOR i IN ${1:1}..${2:10} LOOP\n  ${3:-- process}\nEND LOOP;",
+      "detail": "Numeric FOR loop"
+    },
+    {
+      "label": "IF..THEN..END IF",
+      "insertText": "IF ${1:condition} THEN\n  ${2:-- action}\nEND IF;",
+      "detail": "Simple IF block"
+    },
+    {
+      "label": "IF..THEN..ELSE..END IF",
+      "insertText": "IF ${1:condition} THEN\n  ${2:-- action}\nELSE\n  ${3:-- alternative}\nEND IF;",
+      "detail": "IF/ELSE block"
+    },
+    {
+      "label": "IF..THEN..ELSIF..END IF",
+      "insertText": "IF ${1:condition1} THEN\n  ${2:-- action1}\nELSIF ${3:condition2} THEN\n  ${4:-- action2}\nELSE\n  ${5:-- default}\nEND IF;",
+      "detail": "IF/ELSIF/ELSE block"
+    },
+    {
+      "label": "BEGIN..EXCEPTION..END",
+      "insertText": "BEGIN\n  ${1:-- code}\nEXCEPTION\n  WHEN OTHERS THEN\n    ${2:-- handle error}\nEND;",
+      "detail": "Anonymous block with exception"
+    },
+    {
+      "label": "DECLARE..BEGIN..END",
+      "insertText": "DECLARE\n  ${1:-- variables}\nBEGIN\n  ${2:-- code}\nEND;",
+      "detail": "Full anonymous block"
+    },
+    {
+      "label": "DECLARE..BEGIN..EXCEPTION..END",
+      "insertText": "DECLARE\n  ${1:-- variables}\nBEGIN\n  ${2:-- code}\nEXCEPTION\n  WHEN OTHERS THEN\n    ${3:-- handle error}\nEND;",
+      "detail": "Full anonymous block with exception"
+    },
+    {
+      "label": "CURSOR declaration",
+      "insertText": "CURSOR ${1:cur_name} IS\n  SELECT ${2:columns}\n  FROM   ${3:table}\n  WHERE  ${4:condition};",
+      "detail": "Explicit cursor declaration"
+    },
+    {
+      "label": "CURSOR open/fetch/close",
+      "insertText": "OPEN ${1:cur_name};\nLOOP\n  FETCH ${1:cur_name} INTO ${2:rec};\n  EXIT WHEN ${1:cur_name}%NOTFOUND;\n  ${3:-- process}\nEND LOOP;\nCLOSE ${1:cur_name};",
+      "detail": "Full cursor processing"
+    },
+    {
+      "label": "BULK COLLECT",
+      "insertText": "SELECT ${1:columns}\nBULK COLLECT INTO ${2:collection}\nFROM ${3:table};",
+      "detail": "Bulk collect into collection"
+    },
+    {
+      "label": "FORALL..INSERT",
+      "insertText": "FORALL i IN 1..${1:collection}.COUNT\n  INSERT INTO ${2:table} VALUES ${1:collection}(i);",
+      "detail": "Bulk insert with FORALL"
+    },
+    {
+      "label": "WHILE..LOOP",
+      "insertText": "WHILE ${1:condition} LOOP\n  ${2:-- process}\nEND LOOP;",
+      "detail": "While loop"
+    },
+    {
+      "label": "CASE expression",
+      "insertText": "CASE\n  WHEN ${1:condition} THEN ${2:result}\n  ELSE ${3:default}\nEND",
+      "detail": "CASE expression"
+    },
+    {
+      "label": "EXECUTE IMMEDIATE",
+      "insertText": "EXECUTE IMMEDIATE '${1:sql_statement}' USING ${2:bind_var};",
+      "detail": "Dynamic SQL execution"
+    },
+    {
+      "label": "RAISE_APPLICATION_ERROR",
+      "insertText": "RAISE_APPLICATION_ERROR(${1:-20001}, '${2:Error message}');",
+      "detail": "Raise custom application error"
+    },
+    {
+      "label": "PRAGMA EXCEPTION_INIT",
+      "insertText": "PRAGMA EXCEPTION_INIT(${1:exception_name}, ${2:-20001});",
+      "detail": "Associate exception with error code"
+    },
+    {
+      "label": "CREATE OR REPLACE PROCEDURE",
+      "insertText": "CREATE OR REPLACE PROCEDURE ${1:proc_name} (\n  ${2:p_param1} IN ${3:VARCHAR2}\n) AS\nBEGIN\n  ${4:-- code}\nEND ${1:proc_name};",
+      "detail": "Create stored procedure"
+    },
+    {
+      "label": "CREATE OR REPLACE FUNCTION",
+      "insertText": "CREATE OR REPLACE FUNCTION ${1:func_name} (\n  ${2:p_param1} IN ${3:VARCHAR2}\n) RETURN ${4:VARCHAR2} AS\n  ${5:l_result} ${4:VARCHAR2};\nBEGIN\n  ${6:-- code}\n  RETURN ${5:l_result};\nEND ${1:func_name};",
+      "detail": "Create stored function"
+    },
+    {
+      "label": "TYPE..TABLE OF",
+      "insertText": "TYPE ${1:t_name} IS TABLE OF ${2:VARCHAR2(100)} INDEX BY PLS_INTEGER;",
+      "detail": "Associative array type"
+    },
+    {
+      "label": "TYPE..RECORD",
+      "insertText": "TYPE ${1:r_name} IS RECORD (\n  ${2:field1} ${3:VARCHAR2(100)},\n  ${4:field2} ${5:NUMBER}\n);",
+      "detail": "Record type"
+    }
+  ]
+}

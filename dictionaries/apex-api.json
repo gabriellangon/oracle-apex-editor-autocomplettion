@@ -1,0 +1,207 @@
+{
+  "packages": [
+    {
+      "name": "APEX_JSON",
+      "procedures": [
+        { "label": "APEX_JSON.OPEN_OBJECT", "detail": "Opens a JSON object context", "signature": "APEX_JSON.OPEN_OBJECT(p_name IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_JSON.CLOSE_OBJECT", "detail": "Closes the current JSON object", "signature": "APEX_JSON.CLOSE_OBJECT" },
+        { "label": "APEX_JSON.OPEN_ARRAY", "detail": "Opens a JSON array context", "signature": "APEX_JSON.OPEN_ARRAY(p_name IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_JSON.CLOSE_ARRAY", "detail": "Closes the current JSON array", "signature": "APEX_JSON.CLOSE_ARRAY" },
+        { "label": "APEX_JSON.WRITE", "detail": "Writes a name/value pair", "signature": "APEX_JSON.WRITE(p_name IN VARCHAR2, p_value IN VARCHAR2)" },
+        { "label": "APEX_JSON.INITIALIZE_OUTPUT", "detail": "Initializes JSON output", "signature": "APEX_JSON.INITIALIZE_OUTPUT(p_http_header IN BOOLEAN DEFAULT TRUE)" },
+        { "label": "APEX_JSON.INITIALIZE_CLOB_OUTPUT", "detail": "Initialize CLOB output", "signature": "APEX_JSON.INITIALIZE_CLOB_OUTPUT(p_dur IN PLS_INTEGER DEFAULT DBMS_LOB.CALL, p_cache IN BOOLEAN DEFAULT TRUE)" },
+        { "label": "APEX_JSON.GET_CLOB_OUTPUT", "detail": "Get CLOB output", "signature": "APEX_JSON.GET_CLOB_OUTPUT RETURN CLOB" },
+        { "label": "APEX_JSON.FREE_OUTPUT", "detail": "Free output resources", "signature": "APEX_JSON.FREE_OUTPUT" },
+        { "label": "APEX_JSON.PARSE", "detail": "Parse JSON string", "signature": "APEX_JSON.PARSE(p_source IN VARCHAR2)" },
+        { "label": "APEX_JSON.GET_VARCHAR2", "detail": "Get VARCHAR2 value from parsed JSON", "signature": "APEX_JSON.GET_VARCHAR2(p_path IN VARCHAR2, p0..p4) RETURN VARCHAR2" },
+        { "label": "APEX_JSON.GET_NUMBER", "detail": "Get NUMBER value from parsed JSON", "signature": "APEX_JSON.GET_NUMBER(p_path IN VARCHAR2, p0..p4) RETURN NUMBER" },
+        { "label": "APEX_JSON.GET_BOOLEAN", "detail": "Get BOOLEAN value from parsed JSON", "signature": "APEX_JSON.GET_BOOLEAN(p_path IN VARCHAR2, p0..p4) RETURN BOOLEAN" },
+        { "label": "APEX_JSON.GET_COUNT", "detail": "Get array element count", "signature": "APEX_JSON.GET_COUNT(p_path IN VARCHAR2, p0..p4) RETURN NUMBER" },
+        { "label": "APEX_JSON.STRINGIFY", "detail": "Convert value to JSON string", "signature": "APEX_JSON.STRINGIFY(p_value IN VARCHAR2) RETURN VARCHAR2" }
+      ]
+    },
+    {
+      "name": "APEX_UTIL",
+      "procedures": [
+        { "label": "APEX_UTIL.SET_SESSION_STATE", "detail": "Sets session state for a page item", "signature": "APEX_UTIL.SET_SESSION_STATE(p_name IN VARCHAR2, p_value IN VARCHAR2)" },
+        { "label": "APEX_UTIL.GET_SESSION_STATE", "detail": "Returns session state for a page item", "signature": "APEX_UTIL.GET_SESSION_STATE(p_item IN VARCHAR2) RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.URL_ENCODE", "detail": "URL-encodes a string", "signature": "APEX_UTIL.URL_ENCODE(p_url IN VARCHAR2) RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.PREPARE_URL", "detail": "Prepares a URL with checksum", "signature": "APEX_UTIL.PREPARE_URL(p_url IN VARCHAR2, ...) RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.STRING_TO_TABLE", "detail": "Converts delimited string to PL/SQL table", "signature": "APEX_UTIL.STRING_TO_TABLE(p_string IN VARCHAR2, p_separator IN VARCHAR2 DEFAULT ':') RETURN APEX_APPLICATION_GLOBAL.VC_ARR2" },
+        { "label": "APEX_UTIL.TABLE_TO_STRING", "detail": "Converts PL/SQL table to string", "signature": "APEX_UTIL.TABLE_TO_STRING(p_table IN APEX_APPLICATION_GLOBAL.VC_ARR2, p_separator IN VARCHAR2 DEFAULT ':') RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.GET_SESSION_LANG", "detail": "Get session language", "signature": "APEX_UTIL.GET_SESSION_LANG RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.GET_SESSION_TERRITORY", "detail": "Get session territory", "signature": "APEX_UTIL.GET_SESSION_TERRITORY RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.HOST_URL", "detail": "Get host URL", "signature": "APEX_UTIL.HOST_URL(p_option IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.GET_BLOB_FILE_SRC", "detail": "Get BLOB file source URL", "signature": "APEX_UTIL.GET_BLOB_FILE_SRC(p_item_name IN VARCHAR2, p_v1 IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_UTIL.CLEAR_PAGE_CACHE", "detail": "Clear page cache", "signature": "APEX_UTIL.CLEAR_PAGE_CACHE(p_page_id IN NUMBER)" },
+        { "label": "APEX_UTIL.CLEAR_APP_CACHE", "detail": "Clear application cache", "signature": "APEX_UTIL.CLEAR_APP_CACHE(p_app_id IN NUMBER DEFAULT NULL)" },
+        { "label": "APEX_UTIL.COUNT_CLICK", "detail": "Count link click", "signature": "APEX_UTIL.COUNT_CLICK(p_url IN VARCHAR2, p_cat IN VARCHAR2, p_id IN VARCHAR2) RETURN VARCHAR2" }
+      ]
+    },
+    {
+      "name": "APEX_COLLECTION",
+      "procedures": [
+        { "label": "APEX_COLLECTION.CREATE_COLLECTION", "detail": "Creates a named collection", "signature": "APEX_COLLECTION.CREATE_COLLECTION(p_collection_name IN VARCHAR2)" },
+        { "label": "APEX_COLLECTION.CREATE_OR_TRUNCATE_COLLECTION", "detail": "Creates or truncates collection", "signature": "APEX_COLLECTION.CREATE_OR_TRUNCATE_COLLECTION(p_collection_name IN VARCHAR2)" },
+        { "label": "APEX_COLLECTION.ADD_MEMBER", "detail": "Adds a member to a collection", "signature": "APEX_COLLECTION.ADD_MEMBER(p_collection_name IN VARCHAR2, p_c001..p_c050 IN VARCHAR2 DEFAULT NULL, p_n001..p_n005 IN NUMBER DEFAULT NULL)" },
+        { "label": "APEX_COLLECTION.UPDATE_MEMBER", "detail": "Updates a collection member", "signature": "APEX_COLLECTION.UPDATE_MEMBER(p_collection_name IN VARCHAR2, p_seq IN NUMBER, ...)" },
+        { "label": "APEX_COLLECTION.DELETE_MEMBER", "detail": "Deletes a collection member", "signature": "APEX_COLLECTION.DELETE_MEMBER(p_collection_name IN VARCHAR2, p_seq IN NUMBER)" },
+        { "label": "APEX_COLLECTION.DELETE_ALL_MEMBERS", "detail": "Delete all members", "signature": "APEX_COLLECTION.DELETE_ALL_MEMBERS(p_collection_name IN VARCHAR2)" },
+        { "label": "APEX_COLLECTION.COLLECTION_EXISTS", "detail": "Checks if a collection exists", "signature": "APEX_COLLECTION.COLLECTION_EXISTS(p_collection_name IN VARCHAR2) RETURN BOOLEAN" },
+        { "label": "APEX_COLLECTION.GET_MEMBER_MD5", "detail": "Get member checksum", "signature": "APEX_COLLECTION.GET_MEMBER_MD5(p_collection_name IN VARCHAR2, p_seq IN NUMBER) RETURN VARCHAR2" },
+        { "label": "APEX_COLLECTION.COLLECTION_MEMBER_COUNT", "detail": "Count members", "signature": "APEX_COLLECTION.COLLECTION_MEMBER_COUNT(p_collection_name IN VARCHAR2) RETURN NUMBER" },
+        { "label": "APEX_COLLECTION.SORT_MEMBERS", "detail": "Sort collection members", "signature": "APEX_COLLECTION.SORT_MEMBERS(p_collection_name IN VARCHAR2, p_sort_on IN VARCHAR2 DEFAULT 'C001')" }
+      ]
+    },
+    {
+      "name": "APEX_PAGE",
+      "procedures": [
+        { "label": "APEX_PAGE.GET_URL", "detail": "Returns a URL for a page", "signature": "APEX_PAGE.GET_URL(p_page IN NUMBER, p_items IN VARCHAR2 DEFAULT NULL, p_values IN VARCHAR2 DEFAULT NULL, p_clear_cache IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_PAGE.IS_READ_ONLY", "detail": "Check if page is read only", "signature": "APEX_PAGE.IS_READ_ONLY RETURN BOOLEAN" }
+      ]
+    },
+    {
+      "name": "APEX_APPLICATION",
+      "procedures": [
+        { "label": "APEX_APPLICATION.G_FLOW_ID", "detail": "Current application ID", "signature": "APEX_APPLICATION.G_FLOW_ID" },
+        { "label": "APEX_APPLICATION.G_FLOW_STEP_ID", "detail": "Current page ID", "signature": "APEX_APPLICATION.G_FLOW_STEP_ID" },
+        { "label": "APEX_APPLICATION.G_INSTANCE", "detail": "Current session ID", "signature": "APEX_APPLICATION.G_INSTANCE" },
+        { "label": "APEX_APPLICATION.G_USER", "detail": "Current user", "signature": "APEX_APPLICATION.G_USER" },
+        { "label": "APEX_APPLICATION.G_BROWSER_LANGUAGE", "detail": "Browser language", "signature": "APEX_APPLICATION.G_BROWSER_LANGUAGE" }
+      ]
+    },
+    {
+      "name": "APEX_STRING",
+      "procedures": [
+        { "label": "APEX_STRING.SPLIT", "detail": "Splits string into a table", "signature": "APEX_STRING.SPLIT(p_str IN VARCHAR2, p_sep IN VARCHAR2 DEFAULT ':') RETURN APEX_T_VARCHAR2" },
+        { "label": "APEX_STRING.JOIN", "detail": "Joins a table into a string", "signature": "APEX_STRING.JOIN(p_table IN APEX_T_VARCHAR2, p_sep IN VARCHAR2 DEFAULT ':') RETURN VARCHAR2" },
+        { "label": "APEX_STRING.FORMAT", "detail": "Formats a string with substitutions", "signature": "APEX_STRING.FORMAT(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_STRING.GET_INITIALS", "detail": "Get initials from name", "signature": "APEX_STRING.GET_INITIALS(p_str IN VARCHAR2, p_cnt IN NUMBER DEFAULT 2) RETURN VARCHAR2" },
+        { "label": "APEX_STRING.PUSH", "detail": "Push value to array", "signature": "APEX_STRING.PUSH(p_table IN OUT APEX_T_VARCHAR2, p_value IN VARCHAR2)" },
+        { "label": "APEX_STRING.SHUFFLE", "detail": "Shuffle array", "signature": "APEX_STRING.SHUFFLE(p_table IN APEX_T_VARCHAR2) RETURN APEX_T_VARCHAR2" }
+      ]
+    },
+    {
+      "name": "APEX_MAIL",
+      "procedures": [
+        { "label": "APEX_MAIL.SEND", "detail": "Sends an email", "signature": "APEX_MAIL.SEND(p_to IN VARCHAR2, p_from IN VARCHAR2, p_subj IN VARCHAR2, p_body IN VARCHAR2, p_body_html IN CLOB DEFAULT NULL)" },
+        { "label": "APEX_MAIL.PUSH_QUEUE", "detail": "Pushes mail queue for delivery", "signature": "APEX_MAIL.PUSH_QUEUE" },
+        { "label": "APEX_MAIL.ADD_ATTACHMENT", "detail": "Add attachment to email", "signature": "APEX_MAIL.ADD_ATTACHMENT(p_mail_id IN NUMBER, p_attachment IN BLOB, p_filename IN VARCHAR2, p_mime_type IN VARCHAR2)" }
+      ]
+    },
+    {
+      "name": "APEX_DEBUG",
+      "procedures": [
+        { "label": "APEX_DEBUG.MESSAGE", "detail": "Writes a debug message", "signature": "APEX_DEBUG.MESSAGE(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_DEBUG.INFO", "detail": "Info-level debug message", "signature": "APEX_DEBUG.INFO(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_DEBUG.WARN", "detail": "Warning-level debug message", "signature": "APEX_DEBUG.WARN(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_DEBUG.ERROR", "detail": "Error-level debug message", "signature": "APEX_DEBUG.ERROR(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_DEBUG.TRACE", "detail": "Trace-level debug message", "signature": "APEX_DEBUG.TRACE(p_message IN VARCHAR2, p0..p19 IN VARCHAR2 DEFAULT NULL)" },
+        { "label": "APEX_DEBUG.ENABLE", "detail": "Enables debug mode", "signature": "APEX_DEBUG.ENABLE(p_level IN PLS_INTEGER DEFAULT 1)" },
+        { "label": "APEX_DEBUG.DISABLE", "detail": "Disables debug mode", "signature": "APEX_DEBUG.DISABLE" },
+        { "label": "APEX_DEBUG.ENTER", "detail": "Log procedure entry", "signature": "APEX_DEBUG.ENTER(p_routine_name IN VARCHAR2, ...)" },
+        { "label": "APEX_DEBUG.LOG_LONG_MESSAGE", "detail": "Log message > 4000 chars", "signature": "APEX_DEBUG.LOG_LONG_MESSAGE(p_message IN VARCHAR2, p_level IN PLS_INTEGER DEFAULT 1)" }
+      ]
+    },
+    {
+      "name": "APEX_ITEM",
+      "procedures": [
+        { "label": "APEX_ITEM.TEXT", "detail": "Render text input", "signature": "APEX_ITEM.TEXT(p_idx IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL, p_size IN NUMBER DEFAULT NULL, p_maxlength IN NUMBER DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_ITEM.HIDDEN", "detail": "Render hidden input", "signature": "APEX_ITEM.HIDDEN(p_idx IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_ITEM.SELECT_LIST", "detail": "Render select list", "signature": "APEX_ITEM.SELECT_LIST(p_idx IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL, p_list_values IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_ITEM.SELECT_LIST_FROM_QUERY", "detail": "Render select list from query", "signature": "APEX_ITEM.SELECT_LIST_FROM_QUERY(p_idx IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL, p_query IN VARCHAR2) RETURN VARCHAR2" },
+        { "label": "APEX_ITEM.CHECKBOX2", "detail": "Render checkbox", "signature": "APEX_ITEM.CHECKBOX2(p_idx IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL, p_attributes IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2" },
+        { "label": "APEX_ITEM.DATE_POPUP2", "detail": "Render date picker", "signature": "APEX_ITEM.DATE_POPUP2(p_idx IN NUMBER, p_row IN NUMBER, p_value IN VARCHAR2 DEFAULT NULL, p_date_format IN VARCHAR2 DEFAULT 'DD-MON-YYYY') RETURN VARCHAR2" }
+      ]
+    },
+    {
+      "name": "APEX_REGION",
+      "procedures": [
+        { "label": "APEX_REGION.OPEN_QUERY_CONTEXT", "detail": "Open region query context", "signature": "APEX_REGION.OPEN_QUERY_CONTEXT(p_page_id IN NUMBER, p_region_id IN NUMBER, ...) RETURN APEX_EXEC.T_CONTEXT" },
+        { "label": "APEX_REGION.IS_READ_ONLY", "detail": "Check if region is read only", "signature": "APEX_REGION.IS_READ_ONLY(p_region_id IN NUMBER) RETURN BOOLEAN" }
+      ]
+    },
+    {
+      "name": "APEX_EXEC",
+      "procedures": [
+        { "label": "APEX_EXEC.OPEN_QUERY_CONTEXT", "detail": "Open query context for data access", "signature": "APEX_EXEC.OPEN_QUERY_CONTEXT(p_location IN VARCHAR2, p_sql_query IN VARCHAR2, ...) RETURN APEX_EXEC.T_CONTEXT" },
+        { "label": "APEX_EXEC.NEXT_ROW", "detail": "Advance to next row", "signature": "APEX_EXEC.NEXT_ROW(p_context IN APEX_EXEC.T_CONTEXT) RETURN BOOLEAN" },
+        { "label": "APEX_EXEC.GET_VARCHAR2", "detail": "Get VARCHAR2 column value", "signature": "APEX_EXEC.GET_VARCHAR2(p_context IN APEX_EXEC.T_CONTEXT, p_column_idx IN PLS_INTEGER) RETURN VARCHAR2" },
+        { "label": "APEX_EXEC.GET_NUMBER", "detail": "Get NUMBER column value", "signature": "APEX_EXEC.GET_NUMBER(p_context IN APEX_EXEC.T_CONTEXT, p_column_idx IN PLS_INTEGER) RETURN NUMBER" },
+        { "label": "APEX_EXEC.CLOSE", "detail": "Close execution context", "signature": "APEX_EXEC.CLOSE(p_context IN OUT APEX_EXEC.T_CONTEXT)" }
+      ]
+    },
+    {
+      "name": "APEX_DATA_PARSER",
+      "procedures": [
+        { "label": "APEX_DATA_PARSER.PARSE", "detail": "Parse data (CSV, JSON, XML)", "signature": "APEX_DATA_PARSER.PARSE(p_content IN BLOB, p_file_name IN VARCHAR2, ...) RETURN APEX_T_PARSER_TABLE" },
+        { "label": "APEX_DATA_PARSER.GET_COLUMNS", "detail": "Get parsed column definitions", "signature": "APEX_DATA_PARSER.GET_COLUMNS(p_content IN BLOB, p_file_name IN VARCHAR2, ...) RETURN APEX_T_PARSER_COLUMNS" },
+        { "label": "APEX_DATA_PARSER.DISCOVER", "detail": "Discover file structure", "signature": "APEX_DATA_PARSER.DISCOVER(p_content IN BLOB, p_file_name IN VARCHAR2) RETURN APEX_DATA_PARSER.T_FILE_PROFILE" }
+      ]
+    },
+    {
+      "name": "APEX_EXPORT",
+      "procedures": [
+        { "label": "APEX_EXPORT.GET_APPLICATION", "detail": "Export application as CLOB files", "signature": "APEX_EXPORT.GET_APPLICATION(p_application_id IN NUMBER, ...) RETURN APEX_T_EXPORT_FILES" },
+        { "label": "APEX_EXPORT.GET_WORKSPACE_FILES", "detail": "Export workspace files", "signature": "APEX_EXPORT.GET_WORKSPACE_FILES(p_workspace_id IN NUMBER) RETURN APEX_T_EXPORT_FILES" }
+      ]
+    },
+    {
+      "name": "APEX_SESSION",
+      "procedures": [
+        { "label": "APEX_SESSION.CREATE_SESSION", "detail": "Create a new session", "signature": "APEX_SESSION.CREATE_SESSION(p_app_id IN NUMBER, p_page_id IN NUMBER, p_username IN VARCHAR2)" },
+        { "label": "APEX_SESSION.DELETE_SESSION", "detail": "Delete current session", "signature": "APEX_SESSION.DELETE_SESSION" },
+        { "label": "APEX_SESSION.ATTACH", "detail": "Attach to existing session", "signature": "APEX_SESSION.ATTACH(p_app_id IN NUMBER, p_page_id IN NUMBER, p_session_id IN NUMBER)" },
+        { "label": "APEX_SESSION.DETACH", "detail": "Detach from session", "signature": "APEX_SESSION.DETACH" }
+      ]
+    },
+    {
+      "name": "APEX_AUTHORIZATION",
+      "procedures": [
+        { "label": "APEX_AUTHORIZATION.IS_AUTHORIZED", "detail": "Check authorization scheme", "signature": "APEX_AUTHORIZATION.IS_AUTHORIZED(p_authorization_name IN VARCHAR2) RETURN BOOLEAN" },
+        { "label": "APEX_AUTHORIZATION.ENABLE_DYNAMIC_GROUPS", "detail": "Enable dynamic groups", "signature": "APEX_AUTHORIZATION.ENABLE_DYNAMIC_GROUPS(p_group_names IN APEX_T_VARCHAR2)" },
+        { "label": "APEX_AUTHORIZATION.RESET_CACHE", "detail": "Reset authorization cache", "signature": "APEX_AUTHORIZATION.RESET_CACHE" }
+      ]
+    },
+    {
+      "name": "APEX_ACL",
+      "procedures": [
+        { "label": "APEX_ACL.ADD_USER_ROLE", "detail": "Add role to user", "signature": "APEX_ACL.ADD_USER_ROLE(p_application_id IN NUMBER, p_user_name IN VARCHAR2, p_role_static_id IN VARCHAR2)" },
+        { "label": "APEX_ACL.REMOVE_USER_ROLE", "detail": "Remove role from user", "signature": "APEX_ACL.REMOVE_USER_ROLE(p_application_id IN NUMBER, p_user_name IN VARCHAR2, p_role_static_id IN VARCHAR2)" },
+        { "label": "APEX_ACL.HAS_USER_ROLE", "detail": "Check if user has role", "signature": "APEX_ACL.HAS_USER_ROLE(p_application_id IN NUMBER, p_user_name IN VARCHAR2, p_role_static_id IN VARCHAR2) RETURN BOOLEAN" },
+        { "label": "APEX_ACL.HAS_USER_ANY_ROLES", "detail": "Check if user has any roles", "signature": "APEX_ACL.HAS_USER_ANY_ROLES(p_application_id IN NUMBER, p_user_name IN VARCHAR2) RETURN BOOLEAN" }
+      ]
+    },
+    {
+      "name": "APEX_AUTOMATION",
+      "procedures": [
+        { "label": "APEX_AUTOMATION.EXECUTE", "detail": "Execute automation", "signature": "APEX_AUTOMATION.EXECUTE(p_static_id IN VARCHAR2)" }
+      ]
+    },
+    {
+      "name": "APEX_WEB_SERVICE",
+      "procedures": [
+        { "label": "APEX_WEB_SERVICE.MAKE_REST_REQUEST", "detail": "Call a REST API", "signature": "APEX_WEB_SERVICE.MAKE_REST_REQUEST(p_url IN VARCHAR2, p_http_method IN VARCHAR2, p_body IN CLOB DEFAULT NULL, ...) RETURN CLOB" },
+        { "label": "APEX_WEB_SERVICE.MAKE_REST_REQUEST_B", "detail": "Call REST API returning BLOB", "signature": "APEX_WEB_SERVICE.MAKE_REST_REQUEST_B(p_url IN VARCHAR2, p_http_method IN VARCHAR2, ...) RETURN BLOB" },
+        { "label": "APEX_WEB_SERVICE.G_STATUS_CODE", "detail": "HTTP status code of last request", "signature": "APEX_WEB_SERVICE.G_STATUS_CODE" },
+        { "label": "APEX_WEB_SERVICE.G_HEADERS", "detail": "Response headers of last request", "signature": "APEX_WEB_SERVICE.G_HEADERS" }
+      ]
+    },
+    {
+      "name": "APEX_IR",
+      "procedures": [
+        { "label": "APEX_IR.GET_REPORT", "detail": "Get interactive report settings", "signature": "APEX_IR.GET_REPORT(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_id IN NUMBER DEFAULT NULL) RETURN APEX_IR.T_REPORT" },
+        { "label": "APEX_IR.RESET_REPORT", "detail": "Reset interactive report", "signature": "APEX_IR.RESET_REPORT(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_id IN NUMBER DEFAULT NULL)" },
+        { "label": "APEX_IR.CLEAR_REPORT", "detail": "Clear interactive report filters", "signature": "APEX_IR.CLEAR_REPORT(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_id IN NUMBER DEFAULT NULL)" },
+        { "label": "APEX_IR.ADD_FILTER", "detail": "Add filter to interactive report", "signature": "APEX_IR.ADD_FILTER(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_column IN VARCHAR2, p_filter_value IN VARCHAR2, ...)" }
+      ]
+    },
+    {
+      "name": "APEX_IG",
+      "procedures": [
+        { "label": "APEX_IG.GET_REPORT", "detail": "Get interactive grid report settings", "signature": "APEX_IG.GET_REPORT(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_id IN NUMBER DEFAULT NULL) RETURN APEX_IG.T_REPORT" },
+        { "label": "APEX_IG.RESET_REPORT", "detail": "Reset interactive grid", "signature": "APEX_IG.RESET_REPORT(p_page_id IN NUMBER, p_region_id IN NUMBER, p_report_id IN NUMBER DEFAULT NULL)" }
+      ]
+    }
+  ]
+}

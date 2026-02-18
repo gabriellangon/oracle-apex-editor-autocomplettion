@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "APEX Monaco Autocomplete",
+  "version": "1.0.0",
+  "description": "Adds SQL, PL/SQL, and APEX API autocomplete to Oracle APEX Monaco editors",
+  "permissions": [],
+  "icons": {
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*/apex/*",
+        "*://*/*/ords/*",
+        "*://apex.oracle.com/*",
+        "http://localhost/*",
+        "https://localhost/*"
+      ],
+      "js": [
+        "content-script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "injected.js",
+        "completion-provider.js",
+        "parsers/variable-parser.js",
+        "dictionaries/sql-keywords.json",
+        "dictionaries/plsql-keywords.json",
+        "dictionaries/apex-api.json"
+      ],
+      "matches": [
+        "*://*/*/apex/*",
+        "*://*/*/ords/*",
+        "*://apex.oracle.com/*",
+        "http://localhost/*",
+        "https://localhost/*"
+      ]
+    }
+  ]
+}
