@@ -419,6 +419,26 @@ describe('plsql-indenter.js', () => {
       expect(lines[3]).toMatch(/^\s{2}\);$/);
     });
 
+
+    test('indents nested multiline function calls across multiple levels', () => {
+      var code = [
+        'BEGIN',
+        'owa_util.redirect_url(',
+        'apex_page.get_url (',
+        'p_page => :app_page_id',
+        ')',
+        ');',
+        'END;'
+      ].join('\n');
+      var result = format(code);
+      var lines = result.trim().split('\n');
+      expect(lines[1]).toMatch(/^\s{2}owa_util.redirect_url\($/);
+      expect(lines[2]).toMatch(/^\s{4}apex_page.get_url \($/);
+      expect(lines[3]).toMatch(/^\s{6}p_page => :app_page_id$/);
+      expect(lines[4]).toMatch(/^\s{4}\)$/);
+      expect(lines[5]).toMatch(/^\s{2}\);$/);
+    });
+
     // ── Uppercase keywords option ────────────────
 
   describe('keyword casing', () => {

@@ -223,7 +223,10 @@
       level = Math.max(0, level - dedentBefore);
 
       // Continuation indentation for multiline procedure/function call arguments.
-      var continuationIndent = (parenCallDepth > 0 && !isCloseParenLine) ? 1 : 0;
+      // Supports nested calls by tracking parenthesis depth line-by-line.
+      var continuationIndent = isCloseParenLine
+        ? Math.max(0, parenCallDepth - 1)
+        : parenCallDepth;
 
       // Build the indented line
       var indentStr = '';
