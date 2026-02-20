@@ -353,7 +353,8 @@ describe('plsql-indenter.js', () => {
 
     test('handles single statement', () => {
       var result = format('SELECT 1 FROM dual;');
-      expect(result.trim()).toBe('SELECT 1 FROM dual;');
+      // After SQL clause splitting, FROM goes to its own line with padding
+      expect(result.trim()).toBe('SELECT 1\nFROM   dual;');
     });
 
     test('handles already-formatted code', () => {
@@ -428,65 +429,133 @@ describe('plsql-indenter.js', () => {
   });
 
 
-    test('indents CASE expression with END; without breaking following lines', () => {
+  test('indents CASE expression with END; without breaking following lines', () => {
+    var code = [
+      'BEGIN',
+      'x := CASE',
+      'WHEN a = 1 THEN',
+      "'A'",
+      'WHEN a = 2 THEN',
+      "'B'",
+      'END;',
+      'y := 42;',
+      'END;'
+    ].join('\n');
+    var result = format(code);
+    var lines = result.trim().split('\n');
+    expect(lines[1]).toMatch(/^\s{2}x := CASE/);
+    expect(lines[2]).toMatch(/^\s{4}WHEN/);
+    expect(lines[3]).toMatch(/^\s{6}'A'/);
+    expect(lines[4]).toMatch(/^\s{4}WHEN/);
+    expect(lines[6]).toMatch(/^\s{2}END;/);
+    expect(lines[7]).toMatch(/^\s{2}y := 42;/);
+    expect(lines[8]).toBe('END;');
+  });
+
+  test('indents multiline function call parameters one level deeper than call name', () => {
+    var code = [
+      'BEGIN',
+      'apex_theme.SET_USER_STYLE (',
+      'p_id => l_style_id',
+      ');',
+      'END;'
+    ].join('\n');
+    var result = format(code);
+    var lines = result.trim().split('\n');
+    expect(lines[1]).toMatch(/^\s{2}apex_theme.SET_USER_STYLE \($/);
+    expect(lines[2]).toMatch(/^\s{4}p_id => l_style_id$/);
+    expect(lines[3]).toMatch(/^\s{2}\);$/);
+  });
+
+
+  test('indents nested multiline function calls across multiple levels', () => {
+    var code = [
+      'BEGIN',
+      'owa_util.redirect_url(',
+      'apex_page.get_url (',
+      'p_page => :app_page_id',
+      ')',
+      ');',
+      'END;'
+    ].join('\n');
+    var result = format(code);
+    var lines = result.trim().split('\n');
+    expect(lines[1]).toMatch(/^\s{2}owa_util.redirect_url\($/);
+    expect(lines[2]).toMatch(/^\s{4}apex_page.get_url \($/);
+    expect(lines[3]).toMatch(/^\s{6}p_page => :app_page_id$/);
+    expect(lines[4]).toMatch(/^\s{4}\)$/);
+    expect(lines[5]).toMatch(/^\s{2}\);$/);
+  });
+
+  // ── Inline THEN body splitting ─────────────────
+
+  describe('inline THEN body', () => {
+    test('splits inline THEN body onto its own line and aligns END IF', () => {
+      var code = 'BEGIN\nIF x > 0 THEN y := 1; END IF;\nEND;';
+      var result = format(code);
+      var lines = result.trim().split('\n');
+      expect(lines[0]).toBe('BEGIN');
+      expect(lines[1]).toMatch(/^\s{2}IF x > 0 THEN$/);
+      expect(lines[2]).toMatch(/^\s{4}y := 1;$/);
+      expect(lines[3]).toMatch(/^\s{2}END IF;$/);
+      expect(lines[4]).toBe('END;');
+    });
+  });
+
+  // ── CASE + ELSE alignment ───────────────────────
+
+  describe('CASE with ELSE', () => {
+    test('aligns END CASE with CASE when ELSE is present', () => {
       var code = [
-        'BEGIN',
-        'x := CASE',
-        'WHEN a = 1 THEN',
-        "'A'",
-        'WHEN a = 2 THEN',
-        "'B'",
-        'END;',
-        'y := 42;',
-        'END;'
+        'BEGIN', 'CASE', 'WHEN a = 1 THEN', 'v := 10;',
+        'ELSE', 'v := 0;', 'END CASE;', 'END;'
       ].join('\n');
       var result = format(code);
       var lines = result.trim().split('\n');
-      expect(lines[1]).toMatch(/^\s{2}x := CASE/);
+      expect(lines[1]).toMatch(/^\s{2}CASE$/);
       expect(lines[2]).toMatch(/^\s{4}WHEN/);
-      expect(lines[3]).toMatch(/^\s{6}'A'/);
-      expect(lines[4]).toMatch(/^\s{4}WHEN/);
-      expect(lines[6]).toMatch(/^\s{2}END;/);
-      expect(lines[7]).toMatch(/^\s{2}y := 42;/);
-      expect(lines[8]).toBe('END;');
+      expect(lines[4]).toMatch(/^\s{4}ELSE$/);
+      expect(lines[5]).toMatch(/^\s{6}/);
+      expect(lines[6]).toMatch(/^\s{2}END CASE;$/);
+      expect(lines[7]).toBe('END;');
     });
 
-    test('indents multiline function call parameters one level deeper than call name', () => {
+    test('formats real-world DECLARE/BEGIN/CASE/EXCEPTION correctly', () => {
       var code = [
-        'BEGIN',
-        'apex_theme.SET_USER_STYLE (',
-        'p_id => l_style_id',
-        ');',
-        'END;'
+        'DECLARE', 'l_result VARCHAR2(100);', 'BEGIN', 'CASE',
+        "WHEN :P1_STATUS = 'A' THEN", "l_result := 'Active';",
+        "WHEN :P1_STATUS = 'I' THEN", "l_result := 'Inactive';",
+        'ELSE', "l_result := 'Unknown';", 'END CASE;',
+        ':P1_RESULT := l_result;', 'EXCEPTION', 'WHEN OTHERS THEN',
+        "l_result := 'Error';", 'END;'
       ].join('\n');
       var result = format(code);
       var lines = result.trim().split('\n');
-      expect(lines[1]).toMatch(/^\s{2}apex_theme.SET_USER_STYLE \($/);
-      expect(lines[2]).toMatch(/^\s{4}p_id => l_style_id$/);
-      expect(lines[3]).toMatch(/^\s{2}\);$/);
+      expect(lines[0]).toBe('DECLARE');
+      expect(lines[2]).toBe('BEGIN');
+      expect(lines[3]).toMatch(/^\s{2}CASE$/);
+      expect(lines[10]).toMatch(/^\s{2}END CASE;$/);
+      expect(lines[11]).toMatch(/^\s{2}:P1_RESULT/);
+      expect(lines[12]).toBe('EXCEPTION');
+      expect(lines[13]).toMatch(/^\s{2}WHEN OTHERS THEN$/);
+      expect(lines[15]).toBe('END;');
     });
 
-
-    test('indents nested multiline function calls across multiple levels', () => {
+    test('handles CASE with ELSE inside an IF block', () => {
       var code = [
-        'BEGIN',
-        'owa_util.redirect_url(',
-        'apex_page.get_url (',
-        'p_page => :app_page_id',
-        ')',
-        ');',
-        'END;'
+        'BEGIN', 'IF x > 0 THEN', 'CASE', 'WHEN a = 1 THEN', 'v := 10;',
+        'ELSE', 'v := 0;', 'END CASE;', 'END IF;', 'END;'
       ].join('\n');
       var result = format(code);
       var lines = result.trim().split('\n');
-      expect(lines[1]).toMatch(/^\s{2}owa_util.redirect_url\($/);
-      expect(lines[2]).toMatch(/^\s{4}apex_page.get_url \($/);
-      expect(lines[3]).toMatch(/^\s{6}p_page => :app_page_id$/);
-      expect(lines[4]).toMatch(/^\s{4}\)$/);
-      expect(lines[5]).toMatch(/^\s{2}\);$/);
+      expect(lines[2]).toMatch(/^\s{4}CASE$/);
+      expect(lines[7]).toMatch(/^\s{4}END CASE;$/);
+      expect(lines[8]).toMatch(/^\s{2}END IF;$/);
+      expect(lines[9]).toBe('END;');
     });
+  });
 
-    // ── Uppercase keywords option ────────────────
+  // ── Uppercase keywords option ────────────────
 
   describe('keyword casing', () => {
     test('uppercases keywords by default', () => {
@@ -501,6 +570,84 @@ describe('plsql-indenter.js', () => {
       var result = format(code, { upperCaseKeywords: false });
       expect(result).toContain('begin');
       expect(result).toContain('end;');
+    });
+  });
+
+  // ── DPriver reference formatting ────────────────
+
+  describe('dpriver-style formatting', () => {
+    test('pads SQL clause keywords for alignment', () => {
+      var code = 'SELECT COUNT(*) INTO v_count FROM employees WHERE department_id = 10 AND salary > 5000;';
+      var result = format(code, { tabSize: 4 });
+      var lines = result.trim().split('\n');
+      // FROM, WHERE, INTO, AND should be padded to 7 chars
+      expect(lines.some(l => /FROM\s{3}/.test(l.trim()))).toBe(true);
+      expect(lines.some(l => /WHERE\s{2}/.test(l.trim()))).toBe(true);
+      expect(lines.some(l => /INTO\s{3}/.test(l.trim()))).toBe(true);
+      expect(lines.some(l => /AND\s{4}/.test(l.trim()))).toBe(true);
+    });
+
+    test('splits compound statements after semicolons', () => {
+      var code = 'DECLARE v_count NUMBER; v_name VARCHAR2(100);';
+      var result = format(code);
+      var lines = result.trim().split('\n');
+      expect(lines.length).toBeGreaterThanOrEqual(3); // DECLARE, v_count, v_name
+      expect(lines[0]).toBe('DECLARE');
+    });
+
+    test('splits BEGIN from following code', () => {
+      var code = 'BEGIN v_x := 1; END;';
+      var result = format(code);
+      var lines = result.trim().split('\n');
+      expect(lines[0]).toBe('BEGIN');
+      expect(lines[1]).toMatch(/v_x/);
+    });
+
+    test('splits CASE expression from WHEN', () => {
+      var code = "CASE v_grade WHEN 'A' THEN v_result := 'Excellent'; END CASE;";
+      var result = format(code);
+      expect(result).toMatch(/CASE v_grade\n/i);
+      expect(result).toMatch(/WHEN 'A' THEN\n/i);
+    });
+
+    test('splits EXCEPTION from WHEN', () => {
+      var code = 'BEGIN\nnull;\nEXCEPTION WHEN NO_DATA_FOUND THEN\nnull;\nEND;';
+      var result = format(code);
+      expect(result).toMatch(/EXCEPTION\n/i);
+      expect(result).toMatch(/WHEN NO_DATA_FOUND THEN/i);
+    });
+
+    test('splits ELSE from following code', () => {
+      var code = 'IF x > 0 THEN\ny := 1;\nELSE y := 0;\nEND IF;';
+      var result = format(code);
+      expect(result).toMatch(/ELSE\n/i);
+    });
+
+    test('formats procedure with IS and variable declarations', () => {
+      var code = 'CREATE OR REPLACE PROCEDURE my_proc IS v_x NUMBER; BEGIN NULL; END my_proc;';
+      var result = format(code, { tabSize: 4 });
+      var lines = result.trim().split('\n');
+      expect(lines[0]).toMatch(/CREATE OR REPLACE PROCEDURE my_proc IS/i);
+      expect(lines.some(l => l.trim().match(/v_x NUMBER;/i))).toBe(true);
+    });
+
+    test('protects strings from keyword splitting', () => {
+      var code = "BEGIN\nx := 'SELECT FROM WHERE AND INTO';\nEND;";
+      var result = format(code);
+      expect(result).toContain("'SELECT FROM WHERE AND INTO'");
+    });
+
+    test('formats complete dpriver-style example', () => {
+      var code = 'DECLARE v_count NUMBER; v_name VARCHAR2(100); BEGIN SELECT COUNT(*) INTO v_count FROM employees WHERE department_id = 10; IF v_count > 0 THEN DBMS_OUTPUT.PUT_LINE(v_count); ELSIF v_count = 0 THEN DBMS_OUTPUT.PUT_LINE(\'None\'); ELSE DBMS_OUTPUT.PUT_LINE(\'Error\'); END IF; END;';
+      var result = format(code, { tabSize: 4 });
+      var lines = result.trim().split('\n');
+      // Should have proper structure
+      expect(lines[0]).toBe('DECLARE');
+      expect(lines.some(l => l.trim() === 'BEGIN')).toBe(true);
+      expect(lines.some(l => /ELSIF/i.test(l.trim()))).toBe(true);
+      expect(lines.some(l => /^ELSE$/i.test(l.trim()))).toBe(true);
+      expect(lines.some(l => /END IF;/i.test(l.trim()))).toBe(true);
+      expect(lines[lines.length - 1]).toBe('END;');
     });
   });
 });

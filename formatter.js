@@ -227,17 +227,23 @@
     if (!code || !code.trim()) return code || '';
 
     var lang = detectLanguageType(code);
+    console.log(LOG, '🔍 detectLanguageType =>', lang);
+    console.log(LOG, '📝 Code preview (first 200 chars):', code.substring(0, 200));
 
     if (lang === 'plsql') {
       // Use custom PL/SQL indenter
       if (typeof window.__formatPlsql === 'function') {
-        return window.__formatPlsql(code, options);
+        console.log(LOG, '✅ Using PL/SQL indenter (window.__formatPlsql)');
+        var result = window.__formatPlsql(code, options);
+        console.log(LOG, '📤 Formatted result preview:', result.substring(0, 200));
+        return result;
       }
       // Fallback if indenter not loaded
-      console.warn(LOG, 'PL/SQL indenter not loaded, using SQL formatter');
+      console.warn(LOG, '⚠️ PL/SQL indenter NOT loaded (window.__formatPlsql is', typeof window.__formatPlsql, '), using SQL formatter fallback');
       return formatSql(code, options);
     }
 
+    console.log(LOG, '✅ Using SQL formatter');
     return formatSql(code, options);
   }
 
@@ -255,17 +261,42 @@
 
     var provider = {
       provideDocumentFormattingEdits: function (model, options) {
+        console.log(LOG, '🚀 provideDocumentFormattingEdits TRIGGERED');
+        console.log(LOG, '📋 Model language:', model.getLanguageId ? model.getLanguageId() : 'unknown');
         var code = model.getValue();
         var tabSize = (options && options.tabSize) || 2;
+        console.log(LOG, '⚙️ Options: tabSize=' + tabSize, ', code length=' + code.length);
 
         var formatted = formatCode(code, {
           tabSize: tabSize,
           upperCaseKeywords: true
         });
 
+        // Diagnostic: did the code actually change?
+        var changed = (formatted !== code);
+        console.log(LOG, '🔄 Code changed?', changed);
+        if (!changed) {
+          console.warn(LOG, '⚠️ FORMATTED === INPUT — nothing will change!');
+        } else {
+          // Show first difference
+          var inLines = code.split('\n');
+          var outLines = formatted.split('\n');
+          for (var d = 0; d < Math.max(inLines.length, outLines.length); d++) {
+            if (inLines[d] !== outLines[d]) {
+              console.log(LOG, '📌 First diff at line', d + 1);
+              console.log(LOG, '  IN:  |' + (inLines[d] || '') + '|');
+              console.log(LOG, '  OUT: |' + (outLines[d] || '') + '|');
+              break;
+            }
+          }
+        }
+
         // Return a single edit that replaces the entire document
         var lineCount = model.getLineCount();
         var lastLineLength = model.getLineMaxColumn(lineCount);
+
+        console.log(LOG, '📐 Edit range: lines 1-' + lineCount + ', lastCol=' + lastLineLength);
+        console.log(LOG, '📏 Formatted length:', formatted.length, 'vs input length:', code.length);
 
         return [{
           range: {
@@ -357,12 +388,17 @@
       return;
     }
 
-    console.log(LOG, 'Initializing formatter…');
+    console.log(LOG, '🏁 Initializing formatter…');
+    console.log(LOG, '  window.__formatPlsql =', typeof window.__formatPlsql);
+    console.log(LOG, '  window.sqlFormatter =', typeof window.sqlFormatter);
+    console.log(LOG, '  window.monaco =', typeof window.monaco);
 
     // Register formatting provider
     var ok = registerFormattingProvider();
     if (ok) {
-      console.log(LOG, 'Formatting provider registered (Shift+Alt+F)');
+      console.log(LOG, '✅ Formatting provider registered (Shift+Alt+F)');
+    } else {
+      console.warn(LOG, '❌ Formatting provider NOT registered');
     }
 
     // Try to add format button to toolbar
