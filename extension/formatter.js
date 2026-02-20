@@ -18,6 +18,7 @@
   window.__apexFormatterActive = true;
 
   var LOG = '[APEX Formatter]';
+  var hasLoggedMonacoWait = false;
 
   // ── SQL vs PL/SQL detection ──────────────────
 
@@ -383,20 +384,24 @@
 
   function init() {
     if (!window.monaco) {
-      console.warn(LOG, 'Monaco not found, will retry…');
+      if (!hasLoggedMonacoWait) {
+        console.warn(LOG, 'Monaco not found, will retry…');
+        hasLoggedMonacoWait = true;
+      }
       setTimeout(init, 1000);
       return;
     }
 
-    console.log(LOG, '🏁 Initializing formatter…');
-    console.log(LOG, '  window.__formatPlsql =', typeof window.__formatPlsql);
-    console.log(LOG, '  window.sqlFormatter =', typeof window.sqlFormatter);
-    console.log(LOG, '  window.monaco =', typeof window.monaco);
+    hasLoggedMonacoWait = false;
+    // console.log(LOG, '🏁 Initializing formatter…');
+    // console.log(LOG, '  window.__formatPlsql =', typeof window.__formatPlsql);
+    // console.log(LOG, '  window.sqlFormatter =', typeof window.sqlFormatter);
+    // console.log(LOG, '  window.monaco =', typeof window.monaco);
 
     // Register formatting provider
     var ok = registerFormattingProvider();
     if (ok) {
-      console.log(LOG, '✅ Formatting provider registered (Shift+Alt+F)');
+      // console.log(LOG, '✅ Formatting provider registered (Shift+Alt+F)');
     } else {
       console.warn(LOG, '❌ Formatting provider NOT registered');
     }
@@ -413,7 +418,7 @@
       console.debug(LOG, 'Could not add format button:', e.message);
     }
 
-    console.log(LOG, 'Formatter active');
+    // console.log(LOG, 'Formatter active');
   }
 
   // Expose functions globally for testing and direct use

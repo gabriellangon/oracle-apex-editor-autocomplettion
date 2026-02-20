@@ -16,7 +16,7 @@
   if (window.__apexAutocompleteInjected) return;
   window.__apexAutocompleteInjected = true;
 
-  console.log('[APEX Autocomplete] Content script loaded on', location.href);
+  // console.log('[APEX Autocomplete] Content script loaded on', location.href);
 
   // ── helpers ──────────────────────────────────
 
@@ -71,7 +71,7 @@
       await injectScript('plsql-indenter.js');
       await injectScript('formatter.js');
 
-      console.log('[APEX Autocomplete] All scripts injected');
+      // console.log('[APEX Autocomplete] All scripts injected');
     } catch (err) {
       console.error('[APEX Autocomplete] Injection failed:', err);
     }
@@ -90,11 +90,6 @@
       var val = document.documentElement.getAttribute('data-apex-monaco-ready');
       if (val) {
         obs.disconnect();
-        if (val === '1') {
-          console.log('[APEX Autocomplete] Monaco detected via poller');
-        } else {
-          console.log('[APEX Autocomplete] Monaco detection timed out – injecting anyway');
-        }
         injectAll();
       }
     });
