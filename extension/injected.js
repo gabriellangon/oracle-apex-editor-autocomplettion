@@ -14,6 +14,7 @@
   var LOG = '[APEX Autocomplete]';
   var configuredEditors = new WeakSet();
   var disposables = [];
+  var hasLoggedMonacoWait = false;
 
   // ── Language detection ───────────────────────
 
@@ -107,7 +108,7 @@
           var d = monaco.languages.registerCompletionItemProvider(lang, filteredProvider);
           disposables.push(d);
           count++;
-          console.log(LOG, 'Registered for "' + lang + '"');
+          // console.log(LOG, 'Registered for "' + lang + '"');
         } catch (e) {
           console.debug(LOG, 'Skip "' + lang + '":', e.message);
         }
@@ -120,7 +121,7 @@
       try {
         var d = monaco.languages.registerCompletionItemProvider('plaintext', filteredProvider);
         disposables.push(d);
-        console.log(LOG, 'Registered for "plaintext" (fallback)');
+        // console.log(LOG, 'Registered for "plaintext" (fallback)');
         count++;
       } catch (e) {
         console.error(LOG, 'Could not register any provider:', e.message);
@@ -171,7 +172,7 @@
     configuredEditors.add(editor);
 
     if (!isPlsqlEditor(editor)) {
-      console.log(LOG, 'Skipping non-PL/SQL editor');
+      // console.log(LOG, 'Skipping non-PL/SQL editor');
       return;
     }
 
@@ -192,7 +193,7 @@
         acceptSuggestionOnEnter: 'on',
         tabCompletion: 'on'
       });
-      console.log(LOG, 'Configured editor');
+      // console.log(LOG, 'Configured editor');
     } catch (e) {
       console.debug(LOG, 'Configure error:', e.message);
     }
@@ -202,12 +203,14 @@
 
   function init() {
     if (!window.monaco) {
-      console.warn(LOG, 'Monaco not found, will retry…');
+      if (!hasLoggedMonacoWait) {
+        console.warn(LOG, 'Monaco not found, will retry…');
+        hasLoggedMonacoWait = true;
+      }
       setTimeout(init, 1000);
       return;
     }
-
-    console.log(LOG, 'Monaco found, initializing…');
+    hasLoggedMonacoWait = false;
 
     // 1. Register completion provider
     var ok = registerProvider();
@@ -219,12 +222,12 @@
     // 2. Configure existing editors
     var editors = getEditors();
     editors.forEach(configureEditor);
-    console.log(LOG, 'Configured', editors.length, 'existing editor(s)');
+    // console.log(LOG, 'Configured', editors.length, 'existing editor(s)');
 
     // 3. Watch for new editors
     if (typeof monaco.editor.onDidCreateEditor === 'function') {
       monaco.editor.onDidCreateEditor(function (editor) {
-        console.log(LOG, 'New editor detected');
+        // console.log(LOG, 'New editor detected');
         setTimeout(function () { configureEditor(editor); }, 200);
       });
     }
@@ -253,7 +256,7 @@
 
     observer.observe(document.body, { childList: true, subtree: true });
 
-    console.log(LOG, '✓ Active — SQL / PL/SQL / APEX API autocomplete enabled');
+    // console.log(LOG, '✓ Active — SQL / PL/SQL / APEX API autocomplete enabled');
   }
 
   init();
