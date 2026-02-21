@@ -102,6 +102,27 @@ https://github.com/gabriellangon/oracle-apex-autocomplete
 
 ---
 
+## Chrome Web Store Justifications
+
+### Single Purpose
+
+This extension has one clear purpose: **provide code autocomplete for Oracle APEX code editors**.
+
+It adds SQL, PL/SQL, and Oracle APEX API suggestions to Monaco editors within Oracle APEX applications, helping developers write code faster.
+
+### Permissions Justification
+
+**Host permissions (`<all_urls>`):**
+Oracle APEX is self-hosted software that can run on any domain (company intranets, cloud instances, custom domains). The extension needs to match all URLs to detect and enhance Monaco code editors wherever Oracle APEX is installed.
+
+**No other permissions are requested.** The extension:
+- Does not collect any user data
+- Does not make network requests
+- Runs entirely in the browser
+- Only activates when it detects a Monaco editor on the page
+
+---
+
 ## Version History
 
 ### v1.1.0

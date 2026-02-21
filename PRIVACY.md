@@ -41,7 +41,7 @@ This extension does not integrate with any third-party services or APIs.
 ## Open Source
 
 This extension is open source. You can review the complete source code at:
-https://github.com/gabriellangon/apex-autocomplete
+https://github.com/gabriellangon/oracle-apex-autocomplete
 
 ## Changes to This Policy
 

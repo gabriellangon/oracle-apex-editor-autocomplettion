@@ -1,6 +1,6 @@
 # APEX Autocomplete
 
-[![Tests](https://github.com/gabriellangon/oracle-oracle-apex-autocomplete/actions/workflows/test.yml/badge.svg)](https://github.com/gabriellangon/oracle-oracle-apex-autocomplete/actions/workflows/test.yml)
+[![Tests](https://github.com/gabriellangon/oracle-apex-autocomplete/actions/workflows/test.yml/badge.svg)](https://github.com/gabriellangon/oracle-apex-autocomplete/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-green.svg)](https://chrome.google.com/webstore)
 
@@ -116,7 +116,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/gabriellangon/oracle-oracle-apex-autocomplete/issues)
+- **Bug Reports**: [GitHub Issues](https://github.com/gabriellangon/oracle-apex-autocomplete/issues)
 - **Questions**: Open an issue with the `question` label
 
 ---

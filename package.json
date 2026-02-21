@@ -2,7 +2,7 @@
   "name": "oracle-apex-autocomplete",
   "version": "1.1.0",
   "private": true,
-  "description": "Adds SQL, PL/SQL, and APEX API autocomplete to Oracle APEX Monaco editors",
+  "description": "SQL, PL/SQL and Oracle APEX API autocomplete for Oracle APEX code editors.",
   "scripts": {
     "test": "jest --coverage",
     "test:watch": "jest --watch"
