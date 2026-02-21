@@ -69,8 +69,13 @@ oracle-apex-autocomplete/
 │   ├── language-switcher.js
 │   ├── popup.html/css/js
 │   ├── parsers/
-│   ├── dictionaries/
+│   ├── dictionaries/      # API dictionaries (generated)
 │   └── icons/
+├── scripts/                # API dictionary generation tools
+│   ├── README.md          # Detailed generation instructions
+│   ├── query.sql          # Oracle SQL to extract APEX APIs
+│   ├── apex-public-plsql-api.json  # Public API whitelist
+│   └── generate_apex_api.py        # CSV → JSON converter
 ├── tests/                  # Jest test suite
 ├── docs/                   # Documentation
 ├── README.md
@@ -78,6 +83,20 @@ oracle-apex-autocomplete/
 ├── CHANGELOG.md
 └── CONTRIBUTING.md
 ```
+
+## Updating the API Dictionary
+
+The APEX API dictionary is generated from an Oracle database. To update it for a new APEX version:
+
+```bash
+cd scripts
+# 1. Run query.sql in SQL Developer against your APEX schema
+# 2. Export results as CSV
+# 3. Generate the JSON dictionary
+python3 generate_apex_api.py
+```
+
+See [scripts/README.md](scripts/README.md) for detailed instructions.
 
 ## Development
 
