@@ -29,6 +29,22 @@
     return map[category] || K.Text;
   }
 
+  // ── Format signature for tooltip ────────────
+
+  function formatSignature(sig) {
+    if (!sig) return '';
+    // Split at opening parenthesis
+    var match = sig.match(/^([^(]+)\((.+)\)(.*)$/);
+    if (!match) return sig;
+    var name = match[1];
+    var params = match[2];
+    var suffix = match[3] || ''; // RETURN clause
+    // Split parameters and format each on its own line
+    var paramList = params.split(/,\s*/);
+    // Always format on multiple lines if there are parameters
+    return name + '(\n  ' + paramList.join(',\n  ') + '\n)' + suffix;
+  }
+
   // ── Build items from dictionaries ────────────
 
   function buildKeywordItems(monaco, dict) {
@@ -73,13 +89,25 @@
       });
       if (!pkg.procedures) return;
       pkg.procedures.forEach(function (proc) {
-        var isFunc = proc.signature && proc.signature.indexOf('RETURN') !== -1;
+        // Use explicit 'kind' field if available, fallback to signature heuristic
+        var isFunc = proc.kind === 'function' ||
+          (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
+        // Short detail: just show return type for functions, or "procedure"
+        var detail = isFunc
+          ? (proc.returnType ? '→ ' + proc.returnType : 'function')
+          : 'procedure';
+        // Format signature with line breaks for readability
+        var formattedSig = formatSignature(proc.signature);
+        // Full documentation with internal name and signature
+        var docParts = [];
+        if (proc.detail) docParts.push('**' + proc.detail + '**');
+        if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
         items.push({
           label:         proc.label,
           kind:          getKind(monaco, isFunc ? 'apex_func' : 'apex_proc'),
-          detail:        proc.detail || proc.label,
+          detail:        detail,
           insertText:    proc.label,
-          documentation: { value: '```\n' + (proc.signature || '') + '\n```' },
+          documentation: { value: docParts.join('\n\n') },
           sortText:      '3_' + proc.label
         });
       });
@@ -110,14 +138,26 @@
         var shortName = proc.label.indexOf('.') !== -1
           ? proc.label.split('.').pop()
           : proc.label;
-        var isFunc = proc.signature && proc.signature.indexOf('RETURN') !== -1;
+        // Use explicit 'kind' field if available, fallback to signature heuristic
+        var isFunc = proc.kind === 'function' ||
+          (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
+        // Short detail: just show return type for functions, or "procedure"
+        var detail = isFunc
+          ? (proc.returnType ? '→ ' + proc.returnType : 'function')
+          : 'procedure';
+        // Format signature with line breaks for readability
+        var formattedSig = formatSignature(proc.signature);
+        // Full documentation with internal name and signature
+        var docParts = [];
+        if (proc.detail) docParts.push('**' + proc.detail + '**');
+        if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
         return {
           label:         shortName,
           kind:          isFunc ? monaco.languages.CompletionItemKind.Function
                                 : monaco.languages.CompletionItemKind.Method,
-          detail:        proc.detail || '',
+          detail:        detail,
           insertText:    shortName,
-          documentation: { value: '```\n' + (proc.signature || '') + '\n```' },
+          documentation: { value: docParts.join('\n\n') },
           sortText:      '1_' + shortName
         };
       });

@@ -5,3 +5,6 @@ coverage/
 # Build output
 dist/
 *.zip
+
+# Generated CSV exports (large files, can be regenerated)
+scripts/*.csv
