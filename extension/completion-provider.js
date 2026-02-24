@@ -94,7 +94,7 @@
         var isFunc = proc.kind === 'function' ||
           (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
         var kindDetail = isFunc
-          ? (proc.returnType ? ' → ' + proc.returnType : 'function')
+          ? (proc.returnType ? 'funvtion → ' + proc.returnType : 'function')
           : 'procedure';
         var detail = kindDetail;
         // Format signature with line breaks for readability
@@ -147,7 +147,7 @@
           (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
 
         var kindDetail = isFunc
-          ? (proc.returnType ? ' → ' + proc.returnType : 'function')
+          ? (proc.returnType ? 'function → ' + proc.returnType : 'function')
           : 'procedure';
         var detail = kindDetail;
         // Format signature with line breaks for readability
