@@ -134,7 +134,6 @@ describe('completion-provider', () => {
     expect(snippetLabels).toContain('IF-THEN-ELSE');
   });
 
-
   test('shows only callable kind in top-level detail', () => {
     const provider = createCompletionProvider(monaco);
     const editor = createMockEditor({ content: '' });
@@ -203,6 +202,7 @@ describe('completion-provider', () => {
     const openObject = result.suggestions.find(s => s.label === 'OPEN_OBJECT');
     expect(openObject.detail).toBe('procedure');
     expect(openObject.documentation.value).toMatch(/alias for `WWV_FLOW_JSON`$/);
+
     // Should NOT contain top-level items
     expect(labels).not.toContain('SELECT');
   });

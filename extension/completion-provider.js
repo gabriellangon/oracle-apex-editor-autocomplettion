@@ -101,6 +101,7 @@
         var formattedSig = formatSignature(proc.signature);
         // Full documentation with alias info and signature
         var docParts = [];
+
         docParts.push('*' + kindDetail + '*');
         if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
         if (proc.detail) docParts.push('alias for `' + proc.detail + '`');
@@ -143,6 +144,7 @@
         // Use explicit 'kind' field if available, fallback to signature heuristic
         var isFunc = proc.kind === 'function' ||
           (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
+
         var kindDetail = isFunc
           ? (proc.returnType ? 'function → ' + proc.returnType : 'function')
           : 'procedure';
@@ -151,6 +153,7 @@
         var formattedSig = formatSignature(proc.signature);
         // Full documentation with alias info and signature
         var docParts = [];
+
         docParts.push('*' + kindDetail + '*');
         if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
         if (proc.detail) docParts.push('alias for `' + proc.detail + '`');
