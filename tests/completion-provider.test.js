@@ -44,12 +44,12 @@ beforeEach(() => {
             procedures: [
               {
                 label: 'APEX_JSON.OPEN_OBJECT',
-                detail: 'Opens a JSON object',
+                detail: 'WWV_FLOW_JSON',
                 signature: 'APEX_JSON.OPEN_OBJECT(p_name IN VARCHAR2 DEFAULT NULL)'
               },
               {
                 label: 'APEX_JSON.PARSE',
-                detail: 'Parse JSON string',
+                detail: 'WWV_FLOW_JSON',
                 signature: 'APEX_JSON.PARSE(p_source IN VARCHAR2) RETURN CLOB'
               }
             ]
@@ -134,8 +134,7 @@ describe('completion-provider', () => {
     expect(snippetLabels).toContain('IF-THEN-ELSE');
   });
 
-
-  test('keeps functional description in top-level detail and includes kind', () => {
+  test('shows only callable kind in top-level detail', () => {
     const provider = createCompletionProvider(monaco);
     const editor = createMockEditor({ content: '' });
     const model = editor.getModel();
@@ -145,8 +144,8 @@ describe('completion-provider', () => {
     const openObj = result.suggestions.find(s => s.label === 'APEX_JSON.OPEN_OBJECT');
     const parseFn = result.suggestions.find(s => s.label === 'APEX_JSON.PARSE');
 
-    expect(openObj.detail).toBe('Opens a JSON object • procedure');
-    expect(parseFn.detail).toBe('Parse JSON string • function');
+    expect(openObj.detail).toBe('procedure');
+    expect(parseFn.detail).toBe('function');
   });
 
   test('returns APEX API packages in suggestions', () => {
@@ -201,7 +200,9 @@ describe('completion-provider', () => {
     expect(labels).toContain('OPEN_OBJECT');
     expect(labels).toContain('PARSE');
     const openObject = result.suggestions.find(s => s.label === 'OPEN_OBJECT');
-    expect(openObject.detail).toBe('Opens a JSON object • procedure');
+    expect(openObject.detail).toBe('procedure');
+    expect(openObject.documentation.value).toMatch(/alias for `WWV_FLOW_JSON`$/);
+
     // Should NOT contain top-level items
     expect(labels).not.toContain('SELECT');
   });

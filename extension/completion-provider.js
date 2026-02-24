@@ -45,6 +45,7 @@
     return name + '(\n  ' + paramList.join(',\n  ') + '\n)' + suffix;
   }
 
+
   // ── Build items from dictionaries ────────────
 
   function buildKeywordItems(monaco, dict) {
@@ -92,19 +93,18 @@
         // Use explicit 'kind' field if available, fallback to signature heuristic
         var isFunc = proc.kind === 'function' ||
           (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
-        // Keep functional description in first-level detail for readability
-        // and append procedure/function info.
         var kindDetail = isFunc
           ? (proc.returnType ? 'function → ' + proc.returnType : 'function')
           : 'procedure';
-        var detail = proc.detail ? proc.detail + ' • ' + kindDetail : kindDetail;
+        var detail = kindDetail;
         // Format signature with line breaks for readability
         var formattedSig = formatSignature(proc.signature);
-        // Full documentation with summary and signature
+        // Full documentation with alias info and signature
         var docParts = [];
-        if (proc.detail) docParts.push('**' + proc.detail + '**');
+
         docParts.push('*' + kindDetail + '*');
         if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
+        if (proc.detail) docParts.push('alias for `' + proc.detail + '`');
         items.push({
           label:         proc.label,
           kind:          getKind(monaco, isFunc ? 'apex_func' : 'apex_proc'),
@@ -144,19 +144,19 @@
         // Use explicit 'kind' field if available, fallback to signature heuristic
         var isFunc = proc.kind === 'function' ||
           (!proc.kind && proc.signature && proc.signature.indexOf('RETURN') !== -1);
-        // Keep functional description in first-level detail for readability
-        // and append procedure/function info.
+
         var kindDetail = isFunc
           ? (proc.returnType ? 'function → ' + proc.returnType : 'function')
           : 'procedure';
-        var detail = proc.detail ? proc.detail + ' • ' + kindDetail : kindDetail;
+        var detail = kindDetail;
         // Format signature with line breaks for readability
         var formattedSig = formatSignature(proc.signature);
-        // Full documentation with summary and signature
+        // Full documentation with alias info and signature
         var docParts = [];
-        if (proc.detail) docParts.push('**' + proc.detail + '**');
+
         docParts.push('*' + kindDetail + '*');
         if (formattedSig) docParts.push('```plsql\n' + formattedSig + '\n```');
+        if (proc.detail) docParts.push('alias for `' + proc.detail + '`');
         return {
           label:         shortName,
           kind:          isFunc ? monaco.languages.CompletionItemKind.Function
