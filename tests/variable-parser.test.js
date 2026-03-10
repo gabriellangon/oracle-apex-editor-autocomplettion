@@ -28,7 +28,7 @@ describe('variable-parser', () => {
     const code = 'l_name VARCHAR2(100);';
     const vars = extractVariables(code);
     expect(vars).toEqual([
-      { name: 'l_name', type: 'VARCHAR2', line: 1 }
+      { name: 'l_name', type: 'VARCHAR2(100)', line: 1 }
     ]);
   });
 
@@ -76,7 +76,7 @@ describe('variable-parser', () => {
     const code = "l_status VARCHAR2(20) DEFAULT 'ACTIVE';";
     const vars = extractVariables(code);
     expect(vars).toEqual([
-      { name: 'l_status', type: 'VARCHAR2', line: 1 }
+      { name: 'l_status', type: 'VARCHAR2(20)', line: 1 }
     ]);
   });
 
@@ -86,7 +86,7 @@ describe('variable-parser', () => {
     const code = 'l_emp_name employees.first_name%TYPE;';
     const vars = extractVariables(code);
     expect(vars).toEqual([
-      { name: 'l_emp_name', type: 'employees.first_name%TYPE', line: 1 }
+      { name: 'l_emp_name', type: 'EMPLOYEES.FIRST_NAME%TYPE', line: 1 }
     ]);
   });
 
@@ -94,7 +94,7 @@ describe('variable-parser', () => {
     const code = 'l_emp_rec employees%ROWTYPE;';
     const vars = extractVariables(code);
     expect(vars).toEqual([
-      { name: 'l_emp_rec', type: 'employees%ROWTYPE', line: 1 }
+      { name: 'l_emp_rec', type: 'EMPLOYEES%ROWTYPE', line: 1 }
     ]);
   });
 
@@ -141,6 +141,33 @@ describe('variable-parser', () => {
     const vars = extractVariables(code);
     expect(vars).toEqual([
       { name: 'p_buffer', type: 'CLOB', line: 1 }
+    ]);
+  });
+
+  test('extracts parameter without IN/OUT mode', () => {
+    const code = '  p_name VARCHAR2(100)';
+    const vars = extractVariables(code);
+    expect(vars).toEqual([
+      { name: 'p_name', type: 'VARCHAR2(100)', line: 1 }
+    ]);
+  });
+
+  test('extracts multiple procedure parameters in one header', () => {
+    const code = 'CREATE OR REPLACE PROCEDURE p_test(param NUMBER, param2 VARCHAR2(30)) IS BEGIN NULL; END;';
+    const vars = extractVariables(code);
+    expect(vars).toEqual([
+      { name: 'param', type: 'NUMBER', line: 1 },
+      { name: 'param2', type: 'VARCHAR2(30)', line: 1 }
+    ]);
+  });
+
+  test('extracts function parameters with mixed modes', () => {
+    const code = 'CREATE OR REPLACE FUNCTION f_test(p_id IN NUMBER, p_label VARCHAR2(20), p_buf IN OUT CLOB) RETURN NUMBER IS BEGIN RETURN 1; END;';
+    const vars = extractVariables(code);
+    expect(vars).toEqual([
+      { name: 'p_id', type: 'NUMBER', line: 1 },
+      { name: 'p_label', type: 'VARCHAR2(20)', line: 1 },
+      { name: 'p_buf', type: 'CLOB', line: 1 }
     ]);
   });
 
@@ -193,7 +220,7 @@ describe('variable-parser', () => {
 
     const vars = extractVariables(code);
     expect(vars).toHaveLength(3);
-    expect(vars[0]).toEqual({ name: 'l_name', type: 'VARCHAR2', line: 2 });
+    expect(vars[0]).toEqual({ name: 'l_name', type: 'VARCHAR2(100)', line: 2 });
     expect(vars[1]).toEqual({ name: 'l_age', type: 'NUMBER', line: 3 });
     expect(vars[2]).toEqual({ name: 'l_active', type: 'BOOLEAN', line: 4 });
   });
