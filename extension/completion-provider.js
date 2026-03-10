@@ -131,6 +131,58 @@
     });
   }
 
+  function buildLocalProgramData(monaco, code) {
+    var items = [];
+    var packageMap = {};
+    if (!code) return { items: items, packageMap: packageMap };
+
+    function addTopLevel(label, isFunc) {
+      items.push({
+        label: label,
+        kind: isFunc ? monaco.languages.CompletionItemKind.Function
+                     : monaco.languages.CompletionItemKind.Method,
+        detail: isFunc ? 'function (local)' : 'procedure (local)',
+        insertText: label,
+        sortText: '1_' + label
+      });
+    }
+
+    // CREATE [OR REPLACE] PACKAGE ... IS/AS ... END ...;
+    var pkgRe = /CREATE\s+(?:OR\s+REPLACE\s+)?PACKAGE(?:\s+BODY)?\s+(\w+)\s+(?:IS|AS)([\s\S]*?)END\s+\w*\s*;/gi;
+    var pm;
+    while ((pm = pkgRe.exec(code)) !== null) {
+      var pkgName = pm[1];
+      var upper = pkgName.toUpperCase();
+      if (!packageMap[upper]) packageMap[upper] = [];
+
+      var body = pm[2] || '';
+      var memberRe = /\b(PROCEDURE|FUNCTION)\s+(\w+)/gi;
+      var mm;
+      while ((mm = memberRe.exec(body)) !== null) {
+        var isFunc = mm[1].toUpperCase() === 'FUNCTION';
+        var member = mm[2];
+        addTopLevel(pkgName + '.' + member, isFunc);
+        packageMap[upper].push({
+          label: member,
+          kind: isFunc ? monaco.languages.CompletionItemKind.Function
+                       : monaco.languages.CompletionItemKind.Method,
+          detail: isFunc ? 'function (local)' : 'procedure (local)',
+          insertText: member,
+          sortText: '1_' + member
+        });
+      }
+    }
+
+    // CREATE [OR REPLACE] standalone PROCEDURE/FUNCTION
+    var standaloneRe = /CREATE\s+(?:OR\s+REPLACE\s+)?(PROCEDURE|FUNCTION)\s+((?:\w+\.)?\w+)/gi;
+    var sm;
+    while ((sm = standaloneRe.exec(code)) !== null) {
+      addTopLevel(sm[2], sm[1].toUpperCase() === 'FUNCTION');
+    }
+
+    return { items: items, packageMap: packageMap };
+  }
+
   // ── Package-dot lookup ───────────────────────
 
   function buildPackageMap(monaco, apiDict) {
@@ -219,22 +271,25 @@
         var range = getRange(model, position);
         var pkgPrefix = getPackagePrefix(model, position);
 
+        var code = model.getValue();
+        var localProgramData = buildLocalProgramData(monaco, code);
+        var mergedPackageMap = Object.assign({}, packageMap, localProgramData.packageMap);
+
         // After a dot → show only that package's members
-        if (pkgPrefix && packageMap[pkgPrefix]) {
+        if (pkgPrefix && mergedPackageMap[pkgPrefix]) {
           return {
-            suggestions: packageMap[pkgPrefix].map(function (item) {
+            suggestions: mergedPackageMap[pkgPrefix].map(function (item) {
               return Object.assign({}, item, { range: range });
             })
           };
         }
 
         // General completion: static items + live variables
-        var code = model.getValue();
         var vars = (typeof window.__extractVariables === 'function')
           ? window.__extractVariables(code) : [];
         var varItems = buildVariableItems(monaco, vars);
 
-        var all = varItems.concat(staticItems);
+        var all = varItems.concat(localProgramData.items).concat(staticItems);
         return {
           suggestions: all.map(function (item) {
             return Object.assign({}, item, { range: range });

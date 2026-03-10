@@ -49,6 +49,73 @@
       }
     }
 
+    function normalizeType(typeRaw) {
+      if (!typeRaw) return 'UNKNOWN';
+      var cleaned = typeRaw
+        .replace(/\s+(DEFAULT|:=).*/i, '')
+        .replace(/\s+NOT\s+NULL.*/i, '')
+        .trim();
+      return cleaned.toUpperCase();
+    }
+
+    function splitParams(paramsText) {
+      var result = [];
+      var current = '';
+      var depth = 0;
+      for (var i = 0; i < paramsText.length; i++) {
+        var ch = paramsText.charAt(i);
+        if (ch === '(') depth++;
+        if (ch === ')' && depth > 0) depth--;
+        if (ch === ',' && depth === 0) {
+          if (current.trim()) result.push(current.trim());
+          current = '';
+          continue;
+        }
+        current += ch;
+      }
+      if (current.trim()) result.push(current.trim());
+      return result;
+    }
+
+    function extractParameterListParams(paramText, startLineNum) {
+      var params = splitParams(paramText);
+      params.forEach(function (p) {
+        var m = p.match(/^(\w+)\s+(?:(IN\s+OUT|IN|OUT)\s+)?(.+)$/i);
+        if (!m || isReserved(m[1])) return;
+        add(m[1], normalizeType(m[3]), startLineNum);
+      });
+    }
+
+    // Extract procedure/function parameters from full headers (single or multiline).
+    // Supports both "p IN NUMBER" and "p NUMBER" forms.
+    var routineStartRe = /\b(?:PROCEDURE|FUNCTION)\s+\w+\s*\(/gi;
+    var rm;
+    while ((rm = routineStartRe.exec(code)) !== null) {
+      var openIdx = code.indexOf('(', rm.index);
+      if (openIdx === -1) continue;
+
+      var depth = 0;
+      var closeIdx = -1;
+      for (var ci = openIdx; ci < code.length; ci++) {
+        var c = code.charAt(ci);
+        if (c === '(') depth++;
+        if (c === ')') {
+          depth--;
+          if (depth === 0) {
+            closeIdx = ci;
+            break;
+          }
+        }
+      }
+      if (closeIdx === -1) continue;
+
+      var paramText = code.substring(openIdx + 1, closeIdx);
+      var lineNum = code.substring(0, rm.index).split('\n').length;
+      extractParameterListParams(paramText, lineNum);
+
+      routineStartRe.lastIndex = closeIdx + 1;
+    }
+
     for (var i = 0; i < lines.length; i++) {
       var raw = lines[i];
       var line = raw.replace(/^\s+/, ''); // ltrim
@@ -60,9 +127,9 @@
 
       // 1. variable_name CONSTANT? TYPE[(size)] [:= | DEFAULT | ;]
       m = line.match(
-        /^(\w+)\s+(?:CONSTANT\s+)?(VARCHAR2|NUMBER|INTEGER|PLS_INTEGER|BINARY_INTEGER|DATE|TIMESTAMP|BOOLEAN|CLOB|BLOB|RAW|XMLTYPE|JSON|SYS_REFCURSOR|LONG|CHAR|NVARCHAR2|NCHAR|NCLOB|BINARY_FLOAT|BINARY_DOUBLE|SIMPLE_INTEGER|SIMPLE_FLOAT|SIMPLE_DOUBLE|NATURAL|NATURALN|POSITIVE|POSITIVEN|SIGNTYPE)(\([^)]*\))?\s*(;|:=|DEFAULT)/i
+        /^(\w+)\s+(?:CONSTANT\s+)?([A-Z][\w$#]*(?:\.[A-Z][\w$#]*)?(?:%TYPE|%ROWTYPE)?)(\s*\([^)]*\))?(?:\s+NOT\s+NULL)?\s*(;|:=|DEFAULT)/i
       );
-      if (m) { add(m[1], m[2].toUpperCase(), lineNum); continue; }
+      if (m) { add(m[1], normalizeType((m[2] || '') + (m[3] || '')), lineNum); continue; }
 
       // 2. variable_name table.column%TYPE
       m = line.match(/^(\w+)\s+(\w+\.\w+)%TYPE\s*(;|:=|DEFAULT)/i);
@@ -81,9 +148,9 @@
       if (m) { add(m[1], 'RECORD (loop)', lineNum); continue; }
 
       // 6. param_name IN/OUT/IN OUT TYPE
-      m = line.match(/^\s*(\w+)\s+(IN\s+OUT|IN|OUT)\s+(\w+)/i);
+      m = line.match(/^\s*(\w+)\s+(?:(IN\s+OUT|IN|OUT)\s+)?([^,;:=]+(?:\([^)]*\))?(?:%TYPE|%ROWTYPE)?)/i);
       if (m && !isReserved(m[1])) {
-        add(m[1], m[3].toUpperCase(), lineNum);
+        add(m[1], normalizeType(m[3]), lineNum);
         continue;
       }
 

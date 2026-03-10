@@ -207,6 +207,50 @@ describe('completion-provider', () => {
     expect(labels).not.toContain('SELECT');
   });
 
+  test('returns local package members after typing local package prefix', () => {
+    const provider = createCompletionProvider(monaco);
+    const content = [
+      'CREATE OR REPLACE PACKAGE my_pkg IS',
+      '  PROCEDURE do_work(p_id NUMBER, p_name VARCHAR2);',
+      '  FUNCTION get_name(p_id NUMBER) RETURN VARCHAR2;',
+      'END my_pkg;',
+      'BEGIN',
+      '  my_pkg.',
+      'END;'
+    ].join('\n');
+    const model = createMockEditor({ content }).getModel();
+    model.getLineContent.mockReturnValue('  my_pkg.');
+    model.getWordUntilPosition.mockReturnValue({ word: '', startColumn: 10, endColumn: 10 });
+
+    const position = { lineNumber: 6, column: 10 };
+    const result = provider.provideCompletionItems(model, position);
+    const labels = result.suggestions.map(s => s.label);
+
+    expect(labels).toContain('do_work');
+    expect(labels).toContain('get_name');
+  });
+
+  test('returns local routines in top-level suggestions', () => {
+    const provider = createCompletionProvider(monaco);
+    const content = [
+      'CREATE OR REPLACE FUNCTION local_fn(p1 NUMBER, p2 VARCHAR2) RETURN NUMBER IS',
+      'BEGIN',
+      '  RETURN p1;',
+      'END;',
+      '/',
+      'CREATE OR REPLACE PACKAGE pkg2 IS',
+      '  PROCEDURE run_it;',
+      'END pkg2;'
+    ].join('\n');
+    const model = createMockEditor({ content }).getModel();
+    const position = { lineNumber: 1, column: 1 };
+    const result = provider.provideCompletionItems(model, position);
+    const labels = result.suggestions.map(s => s.label);
+
+    expect(labels).toContain('local_fn');
+    expect(labels).toContain('pkg2.run_it');
+  });
+
   // ── Range is applied to all suggestions ───────
 
   test('each suggestion has a range property', () => {
